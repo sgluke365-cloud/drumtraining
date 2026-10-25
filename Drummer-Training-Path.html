@@ -1,0 +1,2286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drummer Training Path</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Layout: sticky header with four tabs; Today is a single column card stack; Practice is a
+   controls column beside a stage column that collapses to one column on a phone. */
+:root {
+  --bg: #e9ecf0;
+  --surface: #f6f7f9;
+  --surface2: #dde2e8;
+  --ink: #151a21;
+  --muted: #566170;
+  --line: #c6ccd5;
+  --brass: #8a5f0e;
+  --brass-fill: #c9921f;
+  --brass-soft: #f0e2c0;
+  --ok: #17835a;
+  --early: #2f6bc9;
+  --late: #c9610f;
+  --bad: #b83a3a;
+  --ok-soft: #cfeadd;
+  --early-soft: #d3e1f6;
+  --late-soft: #f6dcc4;
+  --bad-soft: #f3d3d3;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101318;
+    --surface: #1a1f26;
+    --surface2: #252b34;
+    --ink: #e8ebef;
+    --muted: #9ba5b3;
+    --line: #333b46;
+    --brass: #e1b350;
+    --brass-fill: #d9a441;
+    --brass-soft: #3a2f16;
+    --ok: #3fcb8c;
+    --early: #78a9f5;
+    --late: #f2a05a;
+    --bad: #f27a7a;
+    --ok-soft: #173a2c;
+    --early-soft: #1c2f4d;
+    --late-soft: #44290f;
+    --bad-soft: #4a2222;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101318; --surface: #1a1f26; --surface2: #252b34; --ink: #e8ebef; --muted: #9ba5b3; --line: #333b46;
+  --brass: #e1b350; --brass-fill: #d9a441; --brass-soft: #3a2f16;
+  --ok: #3fcb8c; --early: #78a9f5; --late: #f2a05a; --bad: #f27a7a;
+  --ok-soft: #173a2c; --early-soft: #1c2f4d; --late-soft: #44290f; --bad-soft: #4a2222;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+}
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: .01em; margin: 0; text-wrap: balance; line-height: 1.1; }
+p { margin: 0; }
+a { color: var(--brass); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--brass-fill); outline-offset: 2px; border-radius: 4px; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.app { max-width: 1080px; margin: 0 auto; padding-block: 0 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Header */
+.top { position: sticky; top: 0; z-index: 20; background: var(--bg); padding-block: 14px 0; border-bottom: 1px solid var(--line); }
+.top-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: space-between; padding-bottom: 10px; }
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand svg { flex: none; color: var(--brass); }
+.brand h1 { font-size: 26px; }
+.brand p { font-size: 13px; color: var(--muted); }
+.tabs { display: flex; gap: 2px; overflow-x: auto; }
+.tab { appearance: none; border: 0; background: none; padding: 10px 16px; cursor: pointer; font-weight: 600; color: var(--muted); border-bottom: 3px solid transparent; white-space: nowrap; }
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--brass-fill); }
+
+main { padding-top: 22px; display: flex; flex-direction: column; gap: 18px; }
+main > section:not([hidden]) { display: flex; flex-direction: column; gap: 18px; }
+
+/* Cards and buttons */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+.card h3 { font-size: 22px; margin-bottom: 8px; }
+.btn { appearance: none; border: 1px solid var(--ink); background: var(--ink); color: var(--surface); padding: 9px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; line-height: 1.2; }
+.btn:hover { filter: brightness(1.15); }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--ink); filter: none; }
+.btn.brass { background: var(--brass-fill); border-color: var(--brass-fill); color: #1b1405; }
+.btn.small { padding: 5px 10px; font-size: 13px; }
+.btn.danger { background: transparent; color: var(--bad); border-color: var(--bad); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.spread { justify-content: space-between; }
+input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--brass-fill); flex: none; margin: 0; cursor: pointer; }
+input[type="number"], select { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; min-width: 0; }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: transparent; padding: 0; margin: 0; cursor: pointer; }
+input[type="range"]::-webkit-slider-runnable-track { height: 8px; border-radius: 999px; background: var(--line); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -6px; border-radius: 50%; background: var(--brass-fill); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--ink); }
+input[type="range"]::-moz-range-track { height: 8px; border-radius: 999px; background: var(--line); }
+input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--brass-fill); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--ink); }
+
+/* Today */
+.datebar { display: flex; gap: 14px; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; }
+.datebar h2 { font-size: 34px; }
+.banner { background: var(--brass-soft); border: 1px solid var(--brass-fill); border-radius: 10px; padding: 12px 16px; }
+.weekstrip { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.dchip { appearance: none; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 8px 4px; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 2px; align-items: center; }
+.dchip b { font-family: var(--font-display); font-size: 18px; font-weight: 600; line-height: 1; }
+.dchip small { color: var(--muted); font-size: 11px; }
+.dchip[aria-current="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.dchip.done { background: var(--ok-soft); border-color: var(--ok); }
+.dchip.today { border-color: var(--brass-fill); }
+.dchip.today small:last-child { color: var(--brass); font-weight: 600; }
+.shape { display: grid; grid-template-columns: 3fr 8fr 4fr; gap: 4px; margin-bottom: 16px; }
+.shape div { background: var(--surface2); border-radius: 6px; padding: 7px 10px; font-size: 13px; min-width: 0; }
+.shape div:nth-child(2) { background: var(--brass-soft); }
+.shape b { display: block; font-family: var(--font-display); font-size: 17px; font-weight: 600; }
+.shape span { color: var(--muted); font-size: 12px; display: block; }
+.dotask { font-size: 18px; line-height: 1.45; max-width: 62ch; margin-bottom: 14px; }
+.links { list-style: none; margin: 0 0 16px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.links li { overflow-wrap: anywhere; }
+.links li.plain { color: var(--muted); }
+.links .ext::after { content: ' ↗'; }
+.done-row { display: flex; align-items: center; gap: 10px; font-weight: 600; cursor: pointer; }
+.presets { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+.preset { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.preset .name { font-weight: 600; }
+.preset .sub { font-size: 13px; color: var(--muted); }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--surface2); color: var(--ink); }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--late-soft); color: var(--late); }
+details > summary { cursor: pointer; font-weight: 600; }
+details.card > summary { list-style: none; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+details.card > summary::-webkit-details-marker { display: none; }
+details.card > summary::after { content: '+'; font-family: var(--font-mono); color: var(--muted); font-size: 18px; }
+details.card[open] > summary::after { content: '–'; }
+details.card[open] > summary { margin-bottom: 14px; }
+.rules { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+/* Checklist */
+.meter { height: 10px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+.meter > i { display: block; height: 100%; background: var(--brass-fill); border-radius: 999px; }
+.bar-row { display: flex; gap: 14px; align-items: center; }
+.bar-row .meter { flex: 1; }
+.skills { list-style: none; margin: 0; padding: 0; }
+.skills > li, .daylist > li, .cplist > li, .afterlist > li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); align-items: start; }
+.skills > li:first-child, .daylist > li:first-child, .cplist > li:first-child, .afterlist > li:first-child { border-top: 0; }
+.daylist, .cplist, .afterlist { list-style: none; margin: 0; padding: 0; }
+.daylist .dname { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin-right: 8px; }
+.daylist .ddate { color: var(--muted); font-size: 13px; }
+.daylist p { margin: 2px 0 6px; max-width: 70ch; }
+.daylist > li.done > div p { color: var(--muted); }
+.skill-name { font-weight: 600; }
+.skill-meta { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.week-head { display: flex; justify-content: space-between; width: 100%; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+.week-head h3 { margin: 0; font-size: 21px; }
+.week-head .count { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+.phase-intro { color: var(--muted); max-width: 70ch; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border-top: 0; }
+
+/* Practice */
+.practice { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); grid-template-areas: "ex stage" "mic stage"; grid-template-rows: auto 1fr; gap: 18px; align-items: start; }
+.p-ex { grid-area: ex; min-width: 0; }
+.p-stage { grid-area: stage; }
+.p-mic { grid-area: mic; }
+.stack { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field > label, .field > .lab { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.bpm { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 8px; align-items: stretch; }
+.bpm input { text-align: center; font-family: var(--font-display); font-size: 30px; font-weight: 600; padding: 2px; }
+.bpm button { font-size: 22px; padding: 0; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { flex: 1; appearance: none; border: 0; background: var(--surface); padding: 8px 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.tip { font-size: 13px; color: var(--muted); }
+.pattern { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 6px; }
+.pattern i { font-style: normal; font-family: var(--font-mono); font-size: 12px; width: 22px; height: 24px; display: grid; place-items: center; border-radius: 4px; background: var(--surface2); color: var(--muted); }
+.pattern i.A { background: var(--ink); color: var(--surface); font-weight: 600; }
+.pattern i.x { background: var(--surface2); color: var(--ink); }
+.pattern i.g { background: transparent; border: 1px dashed var(--muted); }
+.pattern i.f { background: repeating-linear-gradient(45deg, var(--surface2), var(--surface2) 3px, var(--surface) 3px, var(--surface) 6px); }
+.pattern i.gap { margin-right: 6px; }
+.meterwrap { position: relative; height: 22px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
+.meterwrap .lvl { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ok); width: 0; transition: width 60ms linear; }
+.meterwrap .gate { position: absolute; top: 0; bottom: 0; width: 3px; background: var(--brass-fill); box-shadow: 0 0 0 1px var(--surface); }
+.flash { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--surface2); transition: background 80ms; }
+.flash.on { background: var(--brass-fill); }
+.status { padding: 10px 12px; border-radius: 8px; background: var(--surface2); font-size: 14px; }
+.status.err { background: var(--bad-soft); color: var(--bad); }
+.status.ok { background: var(--ok-soft); color: var(--ok); }
+.stage { padding: 14px; }
+.stagehead { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.stagehead h3 { margin: 0; font-size: 24px; }
+.bigbpm { font-family: var(--font-display); font-weight: 600; font-size: 44px; line-height: 1; }
+.bigbpm small { font-size: 14px; letter-spacing: .08em; color: var(--muted); margin-left: 6px; }
+.beats { display: flex; gap: 8px; }
+.beats i { width: 18px; height: 18px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--line); }
+.beats i.on { background: var(--brass-fill); border-color: var(--brass-fill); }
+.lanewrap { background: var(--surface2); border-radius: 8px; overflow: hidden; }
+canvas.lane { display: block; width: 100%; height: 190px; }
+.readout { display: flex; gap: 18px; align-items: baseline; flex-wrap: wrap; min-height: 54px; margin-top: 10px; }
+.last { font-family: var(--font-display); font-size: 40px; font-weight: 600; line-height: 1; min-width: 9ch; }
+.last.ok { color: var(--ok); } .last.early { color: var(--early); } .last.late { color: var(--late); } .last.extra { color: var(--bad); }
+.progress { height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+.progress i { display: block; height: 100%; width: 0; background: var(--ink); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin-top: 8px; }
+.legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: var(--c, var(--ink)); }
+
+/* Results */
+.result-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 18px; align-items: center; margin-bottom: 14px; }
+.scorebox { width: 124px; height: 124px; border-radius: 50%; display: grid; place-items: center; text-align: center; border: 6px solid var(--line); }
+.scorebox.pass { border-color: var(--ok); }
+.scorebox.fail { border-color: var(--late); }
+.scorebox b { font-family: var(--font-display); font-size: 56px; line-height: 1; font-weight: 600; display: block; }
+.scorebox span { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.verdict { font-family: var(--font-display); font-size: 28px; font-weight: 600; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.metric { background: var(--surface2); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.metric b { display: block; font-family: var(--font-mono); font-size: 20px; font-weight: 500; }
+.metric span { font-size: 12px; color: var(--muted); }
+.notes { list-style: none; margin: 0 0 14px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.notes li { padding: 8px 12px; border-radius: 8px; border-left: 4px solid var(--muted); background: var(--surface2); }
+.notes li.good { border-left-color: var(--ok); }
+.notes li.warn { border-left-color: var(--late); }
+.stepmap { max-height: 240px; overflow: auto; display: flex; flex-direction: column; gap: 3px; padding: 2px; }
+.stepmap .bar { display: flex; gap: 2px; align-items: center; }
+.stepmap .bn { width: 26px; flex: none; font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+.stepmap i { flex: 1; min-width: 6px; height: 16px; border-radius: 3px; background: var(--surface2); }
+.stepmap i.ok { background: var(--ok); }
+.stepmap i.early { background: var(--early); }
+.stepmap i.late { background: var(--late); }
+.stepmap i.miss { background: transparent; border: 2px solid var(--bad); }
+.stepmap i.free { background: repeating-linear-gradient(45deg, var(--surface2), var(--surface2) 3px, var(--surface) 3px, var(--surface) 6px); }
+.stepmap i.rest { background: transparent; border: 1px dashed var(--line); }
+.stepmap i.beat { margin-right: 4px; }
+svg.chart { width: 100%; height: auto; display: block; }
+svg.chart text { fill: var(--muted); font-family: var(--font-mono); font-size: 10px; }
+svg.chart .band { fill: var(--ok-soft); }
+svg.chart .zero { stroke: var(--ink); stroke-width: 1; opacity: .5; }
+svg.chart .grid { stroke: var(--line); stroke-width: 1; }
+svg.chart .pt-ok { fill: var(--ok); } svg.chart .pt-early { fill: var(--early); } svg.chart .pt-late { fill: var(--late); } svg.chart .pt-extra { fill: none; stroke: var(--bad); stroke-width: 1.5; }
+svg.chart .line { fill: none; stroke: var(--ink); stroke-width: 2; }
+svg.chart .passline { stroke: var(--ok); stroke-dasharray: 4 4; stroke-width: 1; }
+#p-result { scroll-margin-top: 96px; }
+.ramp { background: var(--brass-soft); border: 1px solid var(--brass-fill); border-radius: 8px; padding: 10px 14px; }
+
+/* Progress */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; }
+.tile b { display: block; font-family: var(--font-display); font-size: 38px; font-weight: 600; line-height: 1.05; }
+.tile span { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 760px) {
+  .practice { grid-template-columns: minmax(0, 1fr); grid-template-areas: "ex" "stage" "mic"; }
+  .datebar h2 { font-size: 28px; }
+  .result-head { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .shape { grid-template-columns: 1fr; }
+  .brand h1 { font-size: 22px; }
+  .tab { padding: 10px 11px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="top-row">
+      <div class="brand">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <ellipse cx="20" cy="27" rx="15" ry="6" stroke="currentColor" stroke-width="2.4"/>
+          <path d="M5 27v5c0 3.3 6.7 6 15 6s15-2.7 15-6v-5" stroke="currentColor" stroke-width="2.4"/>
+          <path d="M9 4l14 17M31 4L17 21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <h1>Drummer Training Path</h1>
+          <p>16 weeks, 15 minutes a day, funk focus</p>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Sections">
+        <button class="tab" role="tab" data-act="tab" data-view="today" aria-selected="true">Today</button>
+        <button class="tab" role="tab" data-act="tab" data-view="practice" aria-selected="false">Practice</button>
+        <button class="tab" role="tab" data-act="tab" data-view="checklist" aria-selected="false">Checklist</button>
+        <button class="tab" role="tab" data-act="tab" data-view="progress" aria-selected="false">Progress</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div id="warn" class="banner" hidden></div>
+    <section id="view-today" aria-label="Today"></section>
+    <section id="view-practice" aria-label="Practice" hidden></section>
+    <section id="view-checklist" aria-label="Checklist" hidden></section>
+    <section id="view-progress" aria-label="Progress" hidden></section>
+  </main>
+  <noscript><p class="card">This app needs JavaScript.</p></noscript>
+</div>
+<script>
+/* Drummer Training Path: onset detection, exercise library and scoring.
+   No DOM access here, so the same file runs in the page and in Node tests. */
+(function (root) {
+'use strict';
+
+/* ---------- Onset detector (also runs inside the AudioWorklet) ---------- */
+class OnsetDetector {
+  constructor(sampleRate, opts) {
+    opts = opts || {};
+    this.sr = sampleRate;
+    this.gate = opts.gate !== undefined ? opts.gate : -42;
+    this.flux = opts.flux !== undefined ? opts.flux : 8;
+    this.refractory = opts.refractory !== undefined ? opts.refractory : 0.045;
+    this.peakBlocks = opts.peakBlocks || 8;
+    this.prevX = 0;
+    this.h1 = -120;
+    this.h2 = -120;
+    this.lastOnset = -10;
+    this.pending = null;
+  }
+  setGate(db) { this.gate = db; }
+  process(block, t) {
+    var sum = 0, prev = this.prevX;
+    for (var i = 0; i < block.length; i++) {
+      var x = block[i];
+      var y = x - 0.85 * prev;
+      prev = x;
+      sum += y * y;
+    }
+    this.prevX = prev;
+    var db = 20 * Math.log10(Math.sqrt(sum / block.length) + 1e-9);
+    var out = [];
+    var ref = Math.min(this.h1, this.h2);
+    if (!this.pending && db > this.gate && db - ref > this.flux && t - this.lastOnset > this.refractory) {
+      this.pending = { t: t, peak: db, left: this.peakBlocks };
+      this.lastOnset = t;
+    }
+    if (this.pending) {
+      if (db > this.pending.peak) this.pending.peak = db;
+      this.pending.left -= 1;
+      if (this.pending.left <= 0) {
+        out.push({ t: this.pending.t, db: this.pending.peak });
+        this.pending = null;
+      }
+    }
+    this.h2 = this.h1;
+    this.h1 = db;
+    return { db: db, onsets: out };
+  }
+}
+
+/* Source for the AudioWorklet module: detector class + processor. */
+function workletSource() {
+  return OnsetDetector.toString() + '\n' +
+    'class DrumOnsetProcessor extends AudioWorkletProcessor {\n' +
+    '  constructor(options) {\n' +
+    '    super();\n' +
+    '    this.det = new OnsetDetector(sampleRate, options.processorOptions || {});\n' +
+    '    this.n = 0;\n' +
+    '    this.port.onmessage = (e) => { if (e.data && e.data.gate !== undefined) this.det.setGate(e.data.gate); };\n' +
+    '  }\n' +
+    '  process(inputs) {\n' +
+    '    var ch = inputs[0] && inputs[0][0];\n' +
+    '    if (ch) {\n' +
+    '      var r = this.det.process(ch, currentTime);\n' +
+    '      for (var i = 0; i < r.onsets.length; i++) this.port.postMessage({ type: "onset", t: r.onsets[i].t, db: r.onsets[i].db });\n' +
+    '      this.n++;\n' +
+    '      if (this.n % 4 === 0) this.port.postMessage({ type: "level", db: r.db, t: currentTime });\n' +
+    '    }\n' +
+    '    return true;\n' +
+    '  }\n' +
+    '}\n' +
+    'registerProcessor("drum-onset", DrumOnsetProcessor);\n';
+}
+
+/* ---------- Small maths helpers ---------- */
+function mean(a) { return a.length ? a.reduce(function (s, v) { return s + v; }, 0) / a.length : 0; }
+function sdev(a) {
+  if (a.length < 2) return 0;
+  var m = mean(a);
+  return Math.sqrt(a.reduce(function (s, v) { return s + (v - m) * (v - m); }, 0) / (a.length - 1));
+}
+function median(a) {
+  if (!a.length) return 0;
+  var b = a.slice().sort(function (x, y) { return x - y; });
+  var h = b.length >> 1;
+  return b.length % 2 ? b[h] : (b[h - 1] + b[h]) / 2;
+}
+function percentile(a, p) {
+  if (!a.length) return 0;
+  var b = a.slice().sort(function (x, y) { return x - y; });
+  var k = (b.length - 1) * p;
+  var lo = Math.floor(k), hi = Math.ceil(k);
+  return b[lo] + (b[hi] - b[lo]) * (k - lo);
+}
+function slope(xs, ys) {
+  var n = xs.length;
+  if (n < 3) return 0;
+  var mx = mean(xs), my = mean(ys), num = 0, den = 0;
+  for (var i = 0; i < n; i++) { num += (xs[i] - mx) * (ys[i] - my); den += (xs[i] - mx) * (xs[i] - mx); }
+  return den ? num / den : 0;
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function r1(v) { return Math.round(v * 10) / 10; }
+
+/* A hit within 20 ms of the grid earns full credit; credit falls to zero at 75 ms. */
+function credit(absErrSec) { return clamp(1 - (absErrSec - 0.020) / 0.055, 0, 1); }
+
+/* ---------- Exercise library ---------- */
+/* Pattern characters: x normal hit, A accent, g soft hit, . rest, f free (fill, not scored). */
+var EXERCISES = {
+  p8: { name: 'Steady 8th notes', group: 'Hands', spb: 2, bars: ['xxxxxxxx'], reps: 8, even: true,
+    tip: 'Singles or doubles on the pad. Every stroke the same volume, both hands.' },
+  p16: { name: 'Steady 16th notes', group: 'Hands', spb: 4, bars: ['xxxxxxxxxxxxxxxx'], reps: 8, even: true,
+    tip: 'Sixteen even strokes per bar. Rolls and paradiddle sticking can be played here too.' },
+  loudsoft: { name: 'Loud bar, soft bar (8ths)', group: 'Hands', spb: 2, bars: ['AAAAAAAA', 'gggggggg'], reps: 4,
+    tip: 'Change stick height, not tempo. Loud bar first, then a clearly quieter bar.' },
+  para8: { name: 'Paradiddle accents (8ths)', group: 'Hands', spb: 2, bars: ['AxxxAxxx'], reps: 8,
+    tip: 'RLRR LRLL in 8th notes. The first stroke of each group is an accent.' },
+  para16: { name: 'Paradiddle accents (16ths)', group: 'Hands', spb: 4, bars: ['AxxxAxxxAxxxAxxx'], reps: 8,
+    tip: 'RLRR LRLL in 16th notes. One accent on every beat.' },
+  fill: { name: 'Groove + fill, 3 bars + 1 bar', group: 'Fills and time', spb: 2,
+    bars: ['Axxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'ffffffff'], reps: 4, landing: true,
+    tip: 'Three bars of 8th-note groove, a free fill in bar 4, then land a crash on beat 1.' },
+  fill5: { name: 'Groove + fill, 4 bars + 1 bar', group: 'Fills and time', spb: 2,
+    bars: ['Axxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'ffffffff'], reps: 10, landing: true,
+    tip: 'Four bars of groove, a one-bar fill, crash on beat 1.' },
+  time24: { name: 'Rock groove, click on 2 and 4', group: 'Fills and time', spb: 2, bars: ['xxxxxxxx'], reps: 16,
+    clickBeats: [1, 3], even: true,
+    tip: 'The click only sounds on beats 2 and 4. You carry beats 1 and 3 yourself.' },
+  dress: { name: 'Dress rehearsal: groove, fills, crash', group: 'Fills and time', spb: 2,
+    bars: ['xxxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'ffffffff',
+           'Axxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'ffffffff',
+           'Axxxxxxx', 'xxxxxxxx', 'xxxxxxxx', 'xxxxffff', 'A.......'],
+    reps: 1, clickBeats: [1, 3], landing: true,
+    tip: '4 bars groove, 1-bar fill, 4 bars groove, 1-bar fill, 4 bars groove, 2-beat fill, crash.' },
+  backbeat16: { name: '16th hi-hat groove, backbeats on 2 and 4', group: 'Funk', spb: 4,
+    bars: ['xxxxAxxxxxxxAxxx'], reps: 8,
+    tip: 'Steady 16th hi-hat with the snare backbeats on 2 and 4 clearly louder.' },
+  hat16acc: { name: '16th hi-hat, accent every 8th', group: 'Funk', spb: 4, bars: ['AxAxAxAxAxAxAxAx'], reps: 8,
+    tip: 'One hand on the hi-hat in 16ths, accenting every second note.' },
+  shuffle: { name: 'Shuffle, triplet feel', group: 'Funk', spb: 3, bars: ['x.xx.xA.xx.x'], reps: 8,
+    tip: 'Hi-hat on the first and third triplet of each beat, accent on beat 3.' },
+  free16: { name: 'Free groove, timing only', group: 'Free play', spb: 4, mode: 'free', reps: 8,
+    tip: 'Play anything on a 16th-note grid. Scores how steady you are, not which notes you play.' }
+};
+var EX_ORDER = ['p8', 'p16', 'loudsoft', 'para8', 'para16', 'fill', 'fill5', 'time24', 'dress',
+                'backbeat16', 'hat16acc', 'shuffle', 'free16'];
+
+function exerciseBars(ex) { return ex.bars ? ex.bars.length : 1; }
+
+function stepLabel(i, spb) {
+  var names = spb === 2 ? ['', '&'] : spb === 4 ? ['', 'e', '&', 'a'] : ['', 'la', 'li'];
+  var beat = Math.floor(i / spb) % 4 + 1;
+  return String(beat) + names[i % spb];
+}
+
+/* Time (in seconds) of every metronome click for a take.
+   Returns {clicks:[{t,accent}], t0, tEnd, beat, barDur}. */
+function planTake(ex, o) {
+  var beat = 60 / o.bpm;
+  var barDur = beat * 4;
+  var nBars = ex.mode === 'free' ? o.reps : exerciseBars(ex) * o.reps;
+  var clickBeats = o.click === '24' ? [1, 3] : (o.click === 'off' ? [] : (ex.clickBeats || [0, 1, 2, 3]));
+  var clicks = [];
+  var i, b;
+  if (o.click !== 'off') {
+    for (i = 0; i < 4; i++) clicks.push({ t: o.tStart + i * beat, accent: i === 0 });
+  }
+  var t0 = o.tStart + (o.click === 'off' ? 0.8 : 4 * beat);
+  if (o.click !== 'off') {
+    for (var bar = 0; bar < nBars; bar++) {
+      for (b = 0; b < 4; b++) {
+        if (clickBeats.indexOf(b) >= 0) clicks.push({ t: t0 + (bar * 4 + b) * beat, accent: b === 0 });
+      }
+    }
+  }
+  return { clicks: clicks, t0: t0, tEnd: t0 + nBars * barDur, beat: beat, barDur: barDur, nBars: nBars };
+}
+
+/* ---------- Scoring: pattern exercises ---------- */
+function levelStats(arr) { return { n: arr.length, mean: mean(arr), sd: sdev(arr) }; }
+
+function scoreTake(ex, o) {
+  var spb = ex.spb, sd = 60 / o.bpm / spb, barDur = 240 / o.bpm;
+  var chars = ex.bars.join('');
+  var one = chars;
+  chars = '';
+  for (var r = 0; r < o.reps; r++) chars += one;
+  var total = chars.length;
+  var win = Math.min(0.5 * sd, 0.12);
+  var lat = o.latency || 0;
+  var slots = new Array(total);
+  var extras = [];
+  var freeHits = 0;
+  var i;
+  for (i = 0; i < total; i++) slots[i] = null;
+
+  o.onsets.forEach(function (on) {
+    var tt = on.t - lat;
+    var idx = Math.round((tt - o.t0) / sd);
+    if (idx < 0 || idx >= total) return;
+    var err = tt - (o.t0 + idx * sd);
+    var c = chars.charAt(idx);
+    if (c === 'f') { freeHits++; return; }
+    if (Math.abs(err) > win || c === '.') { extras.push({ idx: idx, err: err, t: tt }); return; }
+    var cur = slots[idx];
+    if (!cur) slots[idx] = { idx: idx, err: err, db: on.db, t: tt, c: c };
+    else if (Math.abs(err) < Math.abs(cur.err)) {
+      extras.push({ idx: idx, err: cur.err, t: cur.t });
+      slots[idx] = { idx: idx, err: err, db: on.db, t: tt, c: c };
+    } else extras.push({ idx: idx, err: err, t: tt });
+  });
+
+  var expected = [];
+  for (i = 0; i < total; i++) if ('xAg'.indexOf(chars.charAt(i)) >= 0) expected.push(i);
+  var hits = expected.map(function (k) { return slots[k]; }).filter(Boolean);
+  var nExp = expected.length;
+  var errsMs = hits.map(function (h) { return h.err * 1000; });
+  var absMs = errsMs.map(Math.abs);
+  var credits = expected.reduce(function (s, k) { return s + (slots[k] ? credit(Math.abs(slots[k].err)) : 0); }, 0);
+  var timingScore = nExp ? 100 * credits / nExp : 0;
+  var extraRatio = nExp ? Math.min(1, extras.length / nExp) : 0;
+
+  /* Loudness by note class */
+  var byC = { A: [], x: [], g: [] };
+  hits.forEach(function (h) { byC[h.c].push(h.db); });
+  var L = { A: levelStats(byC.A), x: levelStats(byC.x), g: levelStats(byC.g) };
+  var rules = [];
+  var normal = L.x.n >= 3 ? L.x : (L.g.n >= 3 ? L.g : null);
+  if (L.A.n >= 2 && normal) {
+    var gap = L.A.mean - normal.mean;
+    var tgt = ex.landing ? 3 : 4;
+    rules.push({ id: 'accent', label: ex.landing ? 'Crash/accent louder than the groove' : 'Accents louder than regular notes',
+      value: r1(gap), unit: 'dB', target: tgt, cmp: '>=', pass: gap >= tgt, ratio: clamp(gap / tgt, 0, 1) });
+  }
+  if (L.g.n >= 3 && L.A.n >= 3) {
+    var gap2 = L.A.mean - L.g.mean;
+    rules.push({ id: 'soft', label: 'Soft bar quieter than loud bar',
+      value: r1(gap2), unit: 'dB', target: 6, cmp: '>=', pass: gap2 >= 6, ratio: clamp(gap2 / 6, 0, 1) });
+  }
+  if (ex.even && L.x.n >= 6) {
+    rules.push({ id: 'even', label: 'Even volume between strokes (spread)',
+      value: r1(L.x.sd), unit: 'dB', target: 3.5, cmp: '<=', pass: L.x.sd <= 3.5, ratio: clamp(3.5 / Math.max(L.x.sd, 0.1), 0, 1) });
+  }
+  var levelScore = rules.length ? 100 * mean(rules.map(function (q) { return q.ratio; })) : null;
+
+  /* Fill check */
+  var fillBars = 0;
+  for (i = 0; i < total; i += spb * 4) if (chars.substr(i, spb * 4).indexOf('f') >= 0) fillBars++;
+  var fillNote = null;
+  if (ex.landing && fillBars > 0) {
+    var perFill = freeHits / fillBars;
+    if (freeHits === 0) fillNote = 'No fill was detected in the free bars. Play something in the empty bar (or half bar) before the crash.';
+    else if (perFill < 2) fillNote = 'Your fills were very short (about ' + r1(perFill) + ' hits each). Try filling the whole free space.';
+  }
+
+  /* Drift: does the error grow over the take? */
+  var drift = 0;
+  if (hits.length >= 8) drift = slope(hits.map(function (h) { return h.t - o.t0; }), hits.map(function (h) { return h.err; })) * barDur * 1000;
+
+  var score = timingScore * (1 - 0.5 * extraRatio);
+  if (levelScore !== null) score = 0.8 * score + 0.2 * levelScore;
+  score = Math.round(clamp(score, 0, 100));
+
+  var meanErr = mean(errsMs), sdErr = sdev(errsMs);
+  var within30 = nExp ? absMs.filter(function (v) { return v <= 30; }).length / nExp : 0;
+  var within50 = nExp ? absMs.filter(function (v) { return v <= 50; }).length / nExp : 0;
+
+  var cells = [];
+  for (i = 0; i < total; i++) {
+    var ch = chars.charAt(i), st = 'rest', e = null;
+    if (ch === 'f') st = 'free';
+    else if (ch !== '.') {
+      var s = slots[i];
+      if (!s) st = 'miss';
+      else { e = s.err * 1000; st = Math.abs(e) <= 30 ? 'ok' : (e < 0 ? 'early' : 'late'); }
+    }
+    cells.push({ i: i, c: ch, st: st, err: e });
+  }
+
+  /* Which beat positions get missed most often */
+  var missBy = {};
+  expected.forEach(function (k) { if (!slots[k]) { var lb = stepLabel(k % (spb * 4), spb); missBy[lb] = (missBy[lb] || 0) + 1; } });
+  var missList = Object.keys(missBy).map(function (k) { return { label: k, n: missBy[k] }; }).sort(function (a, b) { return b.n - a.n; });
+
+  var res = {
+    kind: 'take', bpm: o.bpm, reps: o.reps, spb: spb, stepsPerBar: spb * 4,
+    expected: nExp, matched: hits.length, missed: nExp - hits.length, extras: extras.length, freeHits: freeHits,
+    hitRate: nExp ? hits.length / nExp : 0,
+    meanErr: r1(meanErr), sdErr: r1(sdErr), meanAbs: r1(mean(absMs)), within30: within30, within50: within50,
+    drift: r1(drift), levels: L, rules: rules, timingScore: Math.round(timingScore),
+    levelScore: levelScore === null ? null : Math.round(levelScore),
+    score: score, pass: score >= 80 && (nExp ? hits.length / nExp >= 0.9 : false), cells: cells,
+    points: hits.map(function (h) { return { i: h.idx, err: h.err * 1000, c: h.c }; }),
+    extraPoints: extras.map(function (e2) { return { i: e2.idx, err: e2.err * 1000 }; }),
+    missList: missList, fillNote: fillNote
+  };
+  res.notes = advise(res, ex);
+  return res;
+}
+
+/* ---------- Scoring: free play and recordings ---------- */
+function scoreFree(o) {
+  var spb = o.spb || 4, sd = 60 / o.bpm / spb, barDur = 240 / o.bpm;
+  var lat = o.latency || 0;
+  var phase = null;
+  var on = o.onsets.filter(function (x) { return x.t >= o.t0 - sd / 2 && x.t <= o.t0 + o.dur + sd / 2; });
+  var t0 = o.t0;
+  if (o.phaseFit) {
+    var sx = 0, sy = 0;
+    on.forEach(function (x) { var a = 2 * Math.PI * (x.t / sd); sx += Math.cos(a); sy += Math.sin(a); });
+    var ang = Math.atan2(sy, sx);
+    t0 = (ang / (2 * Math.PI)) * sd;
+    phase = on.length ? Math.hypot(sx, sy) / on.length : 0;
+    lat = 0;
+  }
+  var errs = [], pts = [], dbs = [];
+  on.forEach(function (x) {
+    var tt = x.t - lat;
+    var idx = Math.round((tt - t0) / sd);
+    var err = tt - (t0 + idx * sd);
+    errs.push(err * 1000);
+    pts.push({ i: idx, err: err * 1000, t: tt });
+    dbs.push(x.db);
+  });
+  var absMs = errs.map(Math.abs);
+  var bars = o.dur / barDur;
+  var minHits = Math.max(4, Math.round(bars * 2));
+  var coverage = Math.min(1, on.length / minHits);
+  var cr = on.length ? mean(errs.map(function (e) { return credit(Math.abs(e) / 1000); })) : 0;
+  var score = Math.round(clamp(100 * cr * coverage, 0, 100));
+  var drift = on.length >= 8 ? slope(pts.map(function (p) { return p.t - t0; }), pts.map(function (p) { return p.err; })) * barDur : 0;
+  /* Longest silent stretch, in beats */
+  var times = on.map(function (x) { return x.t; }).sort(function (a, b) { return a - b; });
+  var gapMax = 0;
+  for (var i = 1; i < times.length; i++) gapMax = Math.max(gapMax, times[i] - times[i - 1]);
+  var res = {
+    kind: o.phaseFit ? 'recording' : 'free', bpm: o.bpm, reps: o.reps, spb: spb,
+    expected: minHits, matched: on.length, missed: 0, extras: 0, hitRate: coverage,
+    meanErr: r1(mean(errs)), sdErr: r1(sdev(errs)), meanAbs: r1(mean(absMs)),
+    within30: on.length ? absMs.filter(function (v) { return v <= 30; }).length / on.length : 0,
+    within50: on.length ? absMs.filter(function (v) { return v <= 50; }).length / on.length : 0,
+    drift: r1(drift), rules: [], levels: null, timingScore: score, levelScore: null,
+    score: score, pass: score >= 80, cells: [], points: pts.map(function (p) { return { i: p.idx !== undefined ? p.idx : p.i, err: p.err, c: 'x' }; }),
+    extraPoints: [], missList: [], phase: phase, hits: on.length, bars: r1(bars),
+    density: bars ? r1(on.length / bars) : 0,
+    dynRange: dbs.length >= 6 ? r1(percentile(dbs, 0.9) - percentile(dbs, 0.1)) : null,
+    gapBeats: r1(gapMax / (60 / o.bpm)), levelsFree: true
+  };
+  res.notes = advise(res, null);
+  return res;
+}
+
+/* ---------- Latency calibration from the metronome's own clicks ---------- */
+function calibrateLatency(clickTimes, onsets) {
+  var delays = [];
+  clickTimes.forEach(function (ct) {
+    for (var i = 0; i < onsets.length; i++) {
+      var d = onsets[i].t - ct;
+      if (d >= -0.01 && d <= 0.4) { delays.push(d); break; }
+    }
+  });
+  return { n: delays.length, of: clickTimes.length, ms: Math.round(median(delays) * 1000), sd: Math.round(sdev(delays) * 1000) };
+}
+
+/* ---------- Coaching text ---------- */
+function advise(res, ex) {
+  var n = [];
+  function add(kind, text) { n.push({ kind: kind, text: text }); }
+  var free = res.kind !== 'take';
+  if (res.matched === 0) {
+    add('warn', 'No hits were picked up. Raise the microphone sensitivity (move the threshold line down) or move the mic closer, then check the meter flashes on each hit.');
+    return n;
+  }
+  if (!free) {
+    if (res.hitRate < 0.9) {
+      var top = res.missList.slice(0, 3).map(function (m) { return m.label + ' (' + m.n + 'x)'; }).join(', ');
+      add('warn', 'You hit ' + Math.round(res.hitRate * 100) + '% of the expected notes. Most misses: ' + top + '. If you did play them, they may be too quiet for the threshold.');
+    } else add('good', 'You played ' + Math.round(res.hitRate * 100) + '% of the expected notes.');
+    if (res.extras > Math.max(2, res.expected * 0.08)) add('warn', res.extras + ' extra hits landed off the grid or on rests. Slow the tempo by 4 to 8 BPM, or check for double triggers from a loud ringing cymbal.');
+  }
+  if (res.within30 >= 0.85) add('good', Math.round(res.within30 * 100) + '% of your hits were within 30 ms of the grid.');
+  else add('warn', 'Only ' + Math.round(res.within30 * 100) + '% of hits were within 30 ms of the grid. Aim for 85% or more.');
+  if (Math.abs(res.meanErr) >= 12) {
+    add('info', 'On average you were ' + Math.abs(res.meanErr) + ' ms ' + (res.meanErr < 0 ? 'ahead of' : 'behind') +
+      ' the click. A steady offset like this is normal for the first weeks. If it is more than 40 ms, run the latency calibration on the Practice tab.');
+  }
+  if (res.sdErr > 25) add('warn', 'Your timing spread is ' + res.sdErr + ' ms, so hits are uneven. Drop the tempo by 4 to 8 BPM and aim for a smaller spread rather than speed.');
+  else if (res.sdErr <= 15 && res.matched >= 8) add('good', 'Tight spread of ' + res.sdErr + ' ms between hits.');
+  if (Math.abs(res.drift) >= 4) add('warn', 'You were ' + (res.drift > 0 ? 'slowing down' : 'speeding up') + ' by about ' + Math.abs(res.drift) + ' ms every bar.');
+  (res.rules || []).forEach(function (q) {
+    var line = q.label + ': ' + q.value + ' ' + q.unit + ' (aim for ' + (q.cmp === '>=' ? 'at least ' : 'at most ') + q.target + ' ' + q.unit + ').';
+    add(q.pass ? 'good' : 'warn', line);
+  });
+  if (res.fillNote) add('warn', res.fillNote);
+  if (free) {
+    if (res.gapBeats > 4) add('warn', 'There was a pause of about ' + res.gapBeats + ' beats. Keep the groove going between ideas.');
+    if (res.kind === 'recording' && res.phase !== null) add('info', 'Grid lock ' + Math.round(res.phase * 100) + '%. Near 100% means every hit sits on one steady grid; low values mean the tempo wandered or the BPM setting is off.');
+    if (res.dynRange !== null) add('info', 'Dynamic range between your quiet and loud hits: ' + res.dynRange + ' dB. Ghost notes and backbeats should be clearly apart (aim for 10 dB or more).');
+    add('info', 'Free play scores timing only. It cannot tell which drum you hit, so notes are not checked.');
+  }
+  return n;
+}
+
+/* ---------- Tempo ramp rule from the plan ---------- */
+/* "Add 4 BPM only after three clean passes in a row." takes: [{exId,bpm,score}] oldest first. */
+function rampAdvice(takes, exId, bpm, passMark) {
+  passMark = passMark || 80;
+  var run = 0;
+  for (var i = takes.length - 1; i >= 0; i--) {
+    var t = takes[i];
+    if (t.exId !== exId || t.bpm !== bpm) continue;
+    if (t.score >= passMark) run++; else break;
+  }
+  return { run: run, ready: run >= 3, next: bpm + 4 };
+}
+
+var api = {
+  OnsetDetector: OnsetDetector, workletSource: workletSource, EXERCISES: EXERCISES, EX_ORDER: EX_ORDER,
+  planTake: planTake, scoreTake: scoreTake, scoreFree: scoreFree, calibrateLatency: calibrateLatency,
+  rampAdvice: rampAdvice, stepLabel: stepLabel, credit: credit, median: median, mean: mean
+};
+if (typeof module !== 'undefined' && module.exports) module.exports = api;
+else root.Engine = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+/* Plan data transcribed from the Claude Doc "Drummer Training Path: 15 Minutes a Day (Funk Focus)".
+   Each day: do = task text, links = [label, url|null], px = practice presets [exerciseId, bpm, bars, {click}].
+   Days 1 to 6 of each week are listed here; the seventh (free) day is added by plan4.js. */
+var PLAN = {
+  title: 'Drummer Training Path: 15 Minutes a Day (Funk Focus)',
+  phases: [
+    { n: 1, name: 'Hands', weeks: '1–4', goal: 'Relaxed grip, even strokes, the 12 rudiments that matter most for funk', checkpoint: 'Week 4: 1-minute pad recording',
+      intro: 'Four weeks on a practice pad give you a relaxed grip, even strokes and the first 12 rudiments. Tasks run on days 1 to 6 of each week; the seventh day is free play.' },
+    { n: 2, name: 'Fills and time', weeks: '5–8', goal: 'Read basic notation, play 8th- and 16th-note fills, land them on beat 1 with a click', checkpoint: 'Week 8: groove-and-fill recording',
+      intro: 'Four weeks of counting, reading, fills and metronome work, now mostly on the kit. The rule for every fill: it ends on beat 1 of the next bar, ideally with a crash and kick.' },
+    { n: 3, name: 'Funk', weeks: '9–12', goal: 'Ghost notes, 16th-note hi-hat grooves, Funky Drummer, Purdie shuffle', checkpoint: 'Week 12: 2-minute funk recording',
+      intro: 'Funk comes from soft ghost notes under strong backbeats, syncopated kick drum and hi-hat openings, usually with fewer fills than rock.' },
+    { n: 4, name: 'Soloing', weeks: '13–16', goal: 'Build and play a 16-bar funk solo, then improvise one', checkpoint: 'Week 16: full performance take',
+      intro: 'A funk solo works best as a groove with a story: a short motif, space, dynamics and a clear ending. These four weeks assemble the pieces into 16 bars you can play on cue, then improvise a shorter one.' }
+  ],
+  weeks: []
+};
+
+var VF = 'https://vicfirth.zildjian.com/education/40-essential-rudiments.html';
+var ZM = 'https://ae.zildjian.com/education/beginner-drum-set-lessons/zildjian-drum-set-method/';
+var PAS = 'https://www.pas.org/resources/rudiments';
+
+PLAN.weeks.push(
+  { n: 1, phase: 1, title: 'Grip, fulcrum, rebound', days: [
+    { do: 'Find the stick\'s balance point and pivot slightly behind it between thumb and index finger, other fingers loose. Play slow 8th notes on the pad at 60 BPM.',
+      links: [['How To Hold Drumsticks (Jared Falk, Drumeo)', 'https://www.drumeo.com/beat/?p=19360']], px: [['p8', 60]] },
+    { do: 'Try German, American and French hand positions, 2 minutes each at 60 BPM. Keep the one that feels loosest as your default.',
+      links: [['Matched grip lesson (DrumLessons.com)', 'https://www.drumlessons.com/drum-lessons/general-drum-lessons/how-to-hold-your-drumsticks-using-matched-grip/'],
+              ['Illustrated grip guide (Soundhouse)', 'https://www.soundhouse.co.jp/en/howto/drum/grip-stick/index.php']] },
+    { do: 'Rebound drill: let the stick bounce off the pad and use your fingers, not your forearm, to control the bounce. 8th notes at 60 BPM.',
+      links: [['Zildjian Drum Set Method, lesson 4: Learning the Basic Stroke', 'https://ae.zildjian.com/?p=3607'],
+              ['Lesson 3 (grip and setup) is on the method page', ZM]], px: [['p8', 60]] },
+    { do: 'Single strokes in 8ths at 60 BPM. Add 4 BPM after three clean passes; stop at 80.',
+      links: [['Vic Firth: single stroke roll', VF]], px: [['p8', 60]] },
+    { do: 'Double strokes by rebound: let the second stroke bounce instead of pushing it. 8ths at 60 BPM, both hands equal in volume.',
+      links: [['How To Play Rudiments (JJ Jones, Drumeo)', 'https://www.drumeo.com/beat/how-to-play-rudiments/']], px: [['p8', 60]] },
+    { do: 'Record 60 seconds of singles and doubles. Check shoulder tension, stick height and whether both hands sound the same.',
+      links: [['Grip video (Mike Michalkow, 7 min)', 'https://freedrumlessons.com/drum-lessons/holding-the-drumsticks.php'], ['to compare against', null]], px: [['free16', 60, 15]] }
+  ] },
+  { n: 2, phase: 1, title: 'Singles, doubles, five-stroke roll, dynamics', days: [
+    { do: 'Singles in 8ths at 70 BPM, then in 16ths at 60 BPM.',
+      links: [['Vic Firth: single stroke roll', VF]], px: [['p8', 70], ['p16', 60]] },
+    { do: 'Doubles in 16ths at 60 BPM. Every stroke the same volume, no pushing.',
+      links: [['Zildjian Drum Set Method, lesson 8: double stroke roll and single paradiddle', 'https://ae.zildjian.com/?p=3633']], px: [['p16', 60]] },
+    { do: 'Alternate one bar of singles with one bar of doubles at the same stick height.',
+      links: [['Triple Your Hand Speed In One Day (Russ Miller, Drumeo)', 'https://www.drumeo.com/beat/triple-your-hand-speed-in-one-day/']], px: [['p8', 70]] },
+    { do: 'Five-stroke roll (two doubles and an accent) in 16ths at 60 BPM.',
+      links: [['PAS International Drum Rudiments', PAS]], px: [['p16', 60]] },
+    { do: 'Dynamics: one bar loud, one bar soft, changing stick height rather than squeezing harder.',
+      links: [['Four Moeller strokes: full, tap, down, up (Virtual Drumming)', 'https://www.virtualdrumming.com/drums/rudiments-fundamentals/moeller-strokes.html']], px: [['loudsoft', 60]] },
+    { do: 'Record 60 seconds of singles, doubles and the five-stroke roll. Compare with your Week 1 recording.',
+      links: [['Your Week 1 recording', null]], px: [['free16', 60, 15]] }
+  ] },
+  { n: 3, phase: 1, title: 'Paradiddle family and Moeller basics', days: [
+    { do: 'Single paradiddle (RLRR LRLL) in 8ths at 70 BPM, then in 16ths at 60 BPM.',
+      links: [['Single paradiddle (Drumeo)', 'https://www.drumeo.com/beat/single-paradiddle/']], px: [['para8', 70], ['para16', 60]] },
+    { do: 'The three inversions: RLLR LRRL, RRLR LLRL, RLRL LRLR. Four bars each at 60 BPM.',
+      links: [['16 Ways To Level Up Your Stick Control With Paradiddles (Drumeo)', 'https://www.drumeo.com/beat/16-ways-to-level-up-your-stick-control-with-paradiddles/']], px: [['p8', 60]] },
+    { do: 'Double paradiddle (RLRLRR LRLRLL), triple paradiddle (RLRLRLRR LRLRLRLL) and paradiddle-diddle (RLRRLL), hands only at 60 BPM.',
+      links: [['Mastering the Paradiddle (Electronic Drum Advisor)', 'https://www.electronicdrumadvisor.com/?p=13385']], px: [['p16', 60]] },
+    { do: 'Moeller basics: learn the four strokes (full, down, tap, up) one hand at a time, slowly, at 60 BPM. The stick\'s end position decides which stroke can follow.',
+      links: [['Moeller Method (Bruce Becker, Drumeo)', 'https://www.drumeo.com/beat/the-most-important-drum-technique/'],
+              ['Moeller technique (Virtual Drumming)', 'https://www.virtualdrumming.com/drums/rudiments-fundamentals/moeller-technique.html']] },
+    { do: 'Paradiddle on the kit: play it between hi-hat and snare with the accents on the snare, then add kick variations.',
+      links: [['Drumset paradiddle 1 (Virtual Drumming)', 'https://www.virtualdrumming.com/drums/drums-basic-beats/drumset-paradiddle-1.html']], px: [['para8', 60]] },
+    { do: 'Learn one paradiddle groove and record it.',
+      links: [['Paradiddle grooves (Jeff Salem, Drumeo)', 'https://drumeo.com/beat/?p=5442']], px: [['free16', 70, 17]] }
+  ] },
+  { n: 4, phase: 1, title: 'Flams, drags, checkpoint 1', days: [
+    { do: 'Flam: quiet grace note about an inch high, main note from full height. Alternate hands at 60 BPM.',
+      links: [['Zildjian Drum Set Method, lesson 12: drum fills and the flam', 'https://ae.zildjian.com/?p=3657']] },
+    { do: 'Flam tap and flam accent at 60 BPM, grace notes kept quiet.',
+      links: [['Vic Firth 40 Essential Rudiments', VF]] },
+    { do: 'Drag (ruff) and single drag tap at 60 BPM: two soft grace notes, then the main stroke.',
+      links: [['Zildjian Drum Set Method, lesson 18: buzz roll and drag', 'https://ae.zildjian.com/?p=3691']] },
+    { do: 'Sampler: 2 bars each of singles, doubles, five-stroke roll, paradiddle, paradiddle-diddle, flam and drag at 70 BPM without stopping.',
+      links: [['Your own sampler', null]], px: [['p8', 70, 14]] },
+    { do: 'Flam on the backbeat: play the snare on 2 and 4 as flams in a basic rock groove at 70 BPM.',
+      links: [['Your own groove', null]], px: [['p8', 70, 12]] },
+    { do: 'Checkpoint 1: record 60 seconds of the sampler and compare with Week 1. Listen for even volume, loose hands and steady tempo.',
+      links: [['Your Week 1 recording', null]], px: [['p8', 70, 14]], cp: 'cp1' }
+  ] }
+);
+
+/* Weeks 5 to 8: Phase 2, Fills and time. */
+var ZM2 = ZM;
+
+PLAN.weeks.push(
+  { n: 5, phase: 2, title: 'Counting and 8th-note fills', days: [
+    { do: 'Count 16ths out loud (1 e & a) while playing steady 8ths on the hi-hat with kick on 1 and 3. 70 BPM.',
+      links: [['How To Count Sixteenth Notes (Jared Falk, DrumLessons.com)', 'https://www.drumlessons.com/drum-lessons/drum-theory-notation/how-to-count-sixteenth-notes']], px: [['p8', 70]] },
+    { do: 'Read a one-bar rock groove from notation and play it. Repeat with two more bars from the lesson.',
+      links: [['Reading Drum Notation (FreeDrumLessons)', 'https://freedrumlessons.com/drum-lessons/reading-drum-notation.php'], ['Lesson 9 on the Zildjian method page', ZM2]] },
+    { do: 'Learn the first three of six 8th-note fills between snare and toms. Play 3 bars of groove, then 1 bar of fill, at 70 BPM.',
+      links: [['Eighth Note Drum Fills (FreeDrumLessons)', 'https://freedrumlessons.com/drum-lessons/eighth-note-fills.php']], px: [['fill', 70]] },
+    { do: 'Learn the 8th-note build and one other fill from the article. Land each on a crash with kick on beat 1.',
+      links: [['7 Beginner Drum Fills For Any Style (Drumeo)', 'https://www.drumeo.com/beat/beginner-drum-fills/']], px: [['fill', 70]] },
+    { do: 'Add the bass drum to a fill: kick on the quarter notes while the hands play the fill.',
+      links: [['Make Your Drum Fills Go Boom! (Jared Falk, Drumeo)', 'https://www.drumeo.com/beat/make-your-drum-fills-go-boom/']], px: [['fill', 70]] },
+    { do: 'Play 4 bars of groove plus a 1-bar fill with the click at 70 BPM, ten times without losing the beat. Record it.',
+      links: [['Your own groove', null]], px: [['fill5', 70, 10]] }
+  ] },
+  { n: 6, phase: 2, title: '16th-note fills and fills from rudiments', days: [
+    { do: 'Learn two of the five 16th-note fills, which move in groups of two and four around snare and toms. 60 BPM.',
+      links: [['Sixteenth Note Drum Fills (FreeDrumLessons)', 'https://freedrumlessons.com/drum-lessons/sixteenth-note-fills.php']], px: [['fill', 60]] },
+    { do: 'Learn three of the fills in this lesson; each has a couple of variations.',
+      links: [['10 Drum Fills Every Drummer Should Know (Stephen Taylor, Drumeo)', 'https://www.drumeo.com/beat/10-drum-fills-every-drummer-should-know/']], px: [['fill', 60]] },
+    { do: 'Paradiddle fill: play RLRR LRLL while moving the hands from snare to toms, 60 BPM. Pick two ways to land on beat 1.',
+      links: [['Single Paradiddle Around The Kit (FreeDrumLessons)', 'https://freedrumlessons.com/drum-lessons/single-paradiddle-around-the-drum-set.php']], px: [['fill', 60]] },
+    { do: 'Broken 16th-note fills: swap some strokes for rests. Use the flam tap sticking from Week 4.',
+      links: [['Beginner Broken 16th Note Fills (Jared Falk)', 'https://drumlessons.com/?p=5435']], px: [['fill', 60]] },
+    { do: 'Place fills inside a musical phrase: fill at the end of bar 4, then bar 8. Add a crescendo into the fill.',
+      links: [['Zildjian Drum Set Method, lesson 12', 'https://ae.zildjian.com/?p=3657']], px: [['fill', 70, 2]] },
+    { do: 'Invent three 1-bar fills from what you\'ve learned. Write them down and record them.',
+      links: [['Your own fills', null]], px: [['fill', 70, 3]] }
+  ] },
+  { n: 7, phase: 2, title: 'Groove foundation and time', days: [
+    { do: 'Metronome on beats 2 and 4 only (use an app that lets you mute beats). Basic rock groove at 70 BPM for 3 minutes.',
+      links: [['How to build an effective drum practice routine (Soundbrenner)', 'https://www.soundbrenner.com/blogs/articles/how-to-build-effective-drum-practice-routine']], px: [['time24', 70, 51]] },
+    { do: 'Learn four kick patterns under steady 8th-note hi-hat. 70 BPM.',
+      links: [['Drum Beats Everyone Should Know (Drumeo)', 'https://www.drumeo.com/beat/drum-beats-everyone-should-know/']], px: [['p8', 70]] },
+    { do: '16th-note hi-hat with a simple kick pattern. Count 1 e & a out loud. 60 BPM.',
+      links: [['Zildjian method lessons 15 and 19, on the method page', ZM2]], px: [['p16', 60]] },
+    { do: 'Open hi-hat: open on the "and" of beat 4, close on beat 1. Use it in the 16th-note groove from the day before.',
+      links: [['Zildjian method lesson 16, on the method page', ZM2]], px: [['p16', 60]] },
+    { do: 'Play along to a drumless track at a slow tempo. Hold one groove for 3 minutes with no fills. Set the BPM to match your track; the app listens with no click and checks how steady you are.',
+      links: [['How to find and use drumless tracks and play-alongs (Drumeo)', 'https://www.drumeo.com/beat/how-to-find-and-use-drumless-tracks-and-play-alongs']], px: [['free16', 80, 60, { click: 'off' }]] },
+    { do: 'Record one groove with the click on 2 and 4 only. Check that the click sits under your snare.',
+      links: [['Your own recording', null]], px: [['time24', 70, 24]] }
+  ] },
+  { n: 8, phase: 2, title: 'Phrases and checkpoint 2', days: [
+    { do: 'Over a play-along at 80 BPM, play a fill at the end of every 4 bars. Alternate between two fills. Set the BPM to match your track; the app listens with no click and checks how steady you are.',
+      links: [['9 free play-alongs (Drumeo)', 'https://www.drumeo.com/free-playalongs']], px: [['free16', 80, 24, { click: 'off' }]] },
+    { do: 'Play verse and chorus: a simple groove in the verse, crash on 1 and a fuller groove in the chorus, fill into each change.',
+      links: [['Zildjian Drum Set Method, lesson 20: song form', 'https://ae.zildjian.com/?p=3701']] },
+    { do: 'Kick-driven fills: work through the section on adding an approach note.',
+      links: [['How To Build Epic, Kick-Driven Fills (Larnell Lewis, Drumeo)', 'https://www.drumeo.com/beat/building-epic-fills-with-your-kick/']], px: [['fill', 70]] },
+    { do: 'Pick one idea from the list and play it into a groove.',
+      links: [['5+ Intermediate Drum Fills (Drumeo)', 'https://www.drumeo.com/beat/intermediate-drum-fills/']], px: [['fill', 70]] },
+    { do: 'Dress rehearsal: 4 bars groove, 1-bar fill, 4 bars groove, 1-bar fill, 4 bars groove, 2-beat fill, crash. Click on 2 and 4 only.',
+      links: [['Your own run-through', null]], px: [['dress', 70]] },
+    { do: 'Checkpoint 2: record 90 seconds of groove and fills. Compare timing and dynamics with your Week 5 recording.',
+      links: [['Your Week 5 recording', null]], px: [['fill', 70, 6]], cp: 'cp2' }
+  ] }
+);
+
+/* Weeks 9 to 12: Phase 3, Funk. */
+var SOF2 = 'https://funkydrummer.com/school-of-funk/lesson-2';
+var DGF = 'https://www.drumeo.com/beat/a-drummers-guide-to-funk/';
+
+PLAN.weeks.push(
+  { n: 9, phase: 3, title: 'Ghost notes', days: [
+    { do: 'Learn the first beginner ghost-note beat. Backbeat at full volume, ghost notes with the stick an inch or two off the head. 70 BPM.',
+      links: [['Beginner Ghost Notes (Jared Falk, DrumLessons.com)', 'https://www.drumlessons.com/?p=4728']], px: [['free16', 70, 16]] },
+    { do: 'Count 16ths and add single ghost notes on the "e" and "a" between kick patterns, keeping them soft.',
+      links: [['School of Funk, lesson 2: ghost notes (Jim Payne)', SOF2]], px: [['free16', 70, 16]] },
+    { do: 'Add double ghost notes on the "ands" of beats 2 and 4, as in the James Brown example on the same page.',
+      links: [['School of Funk, lesson 2', SOF2]], px: [['free16', 70, 16]] },
+    { do: 'Read how Jim Riley splits ghost notes into six elements for 16th-note music. Pick two and play them.',
+      links: [['Ghost Notes 101 (Jim Riley, Modern Drummer)', 'https://www.moderndrummer.com/?p=60819']], px: [['free16', 70, 16]] },
+    { do: 'Learn beats 1–3 of the six funk beats. 70 BPM.',
+      links: [['Funk Drum Beats (FreeDrumLessons)', 'https://freedrumlessons.com/drum-lessons/funk-drum-beats.php']], px: [['free16', 70, 16]] },
+    { do: 'Record one ghost-note groove. Listen for a clear volume gap between ghost notes and backbeat.',
+      links: [['Your own recording', null]], px: [['free16', 70, 17]] }
+  ] },
+  { n: 10, phase: 3, title: '16th-note hi-hat and Funky Drummer', days: [
+    { do: '16th-note hi-hat with one hand, accenting the 8th notes within it. 70 BPM, 2 minutes.',
+      links: [['School of Funk, lesson 10: 16ths with one hand (Jim Payne)', 'https://funkydrummer.com/school-of-funk/lesson-10']], px: [['hat16acc', 70, 35]] },
+    { do: 'Add snare ghost notes under the 16th-note hi-hat, keeping the hi-hat accents going.',
+      links: [['School of Funk, lesson 10', 'https://funkydrummer.com/school-of-funk/lesson-10']], px: [['free16', 70, 16]] },
+    { do: 'Learn the "Funky Drummer" groove at 70 BPM: hi-hat 16ths, backbeat, ghost notes, kick.',
+      links: [['The Most Famous Drum Beat In The World (Jared Falk, Drumeo)', 'https://www.drumeo.com/beat/famous-drum-beat/'],
+              ['sheet music PDF', 'http://successful-drumming.s3.amazonaws.com/sheet-music/funky-drummer-beat.pdf']], px: [['backbeat16', 70, 12]] },
+    { do: 'Compare your version with the notation of the main groove, ghost notes and the big fill.',
+      links: [['Behind the Beat: "Funky Drummer" (Roland)', 'https://articles.roland.com/behind-the-beat-funky-drummer-by-james-brown/']], px: [['backbeat16', 70, 12]] },
+    { do: 'Clyde Stubblefield\'s style: ghost notes, offbeat open hats and swung 16ths. Learn what you can from the course outline, then try the ideas.',
+      links: [['Ain\'t It Funky (Melodics)', 'https://melodics.com/blog/aint-it-funky-learn-the-fundamentals-of-funk-drumming']], px: [['free16', 80, 16]] },
+    { do: 'Play Funky Drummer with the click at 80 BPM for 30 seconds without stopping. Record it.',
+      links: [['Your own recording', null]], px: [['backbeat16', 80, 10]] }
+  ] },
+  { n: 11, phase: 3, title: 'Half-time shuffle and pocket', days: [
+    { do: 'Purdie shuffle, step 1: hi-hat shuffle (triplet feel) and foot pulse only. 60 BPM.',
+      links: [['How To Play The Purdie Shuffle, with Bernard Purdie (Drumeo)', 'https://www.drumeo.com/beat/?p=1146']], px: [['shuffle', 60, 8]] },
+    { do: 'Add the snare accent on beat 3, then one ghost note at a time.',
+      links: [['Purdie shuffle (Soundbrenner)', 'https://www.soundbrenner.com/blogs/articles/purdie-shuffle']], px: [['shuffle', 60, 8]] },
+    { do: 'Hear and play it in a song: "Home at Last" by Steely Dan.',
+      links: [['Steely Dan, Home at Last: Purdie groove (Drummer Cafe)', 'https://drummercafe.com/education/lessons/steely-dan-home-at-last-bernard-purdie-drum-groove']] },
+    { do: 'Read David Garibaldi\'s funk tips, then play one groove for 3 minutes with no fills.',
+      links: [['David Garibaldi\'s 12 tips for funk drumming (MusicRadar)', 'https://www.musicradar.com/news/tower-of-power-david-garibaldi-12-tips-for-funk-drumming']], px: [['free16', 70, 51]] },
+    { do: 'Linear funk: hi-hat, snare and kick never sound together. Learn one linear groove and one linear fill.',
+      links: [['A Drummer\'s Guide To Funk (Drumeo)', DGF],
+              ['V-Drums lessons list, including Linear Funk Drumming (Roland)', 'https://www.roland.com/us/rtv/drums_percussion/v-drums_lessons/1000/?lang=en-US']], px: [['free16', 70, 16]] },
+    { do: 'Record one Purdie-style groove and one linear groove.',
+      links: [['Your own recording', null]], px: [['shuffle', 60, 15], ['free16', 70, 17]] }
+  ] },
+  { n: 12, phase: 3, title: 'Funk vocabulary and checkpoint 3', days: [
+    { do: 'Add hi-hat openings on the "and" of 3 in your 16th-note groove, keeping ghost notes soft.',
+      links: [['School of Funk, lesson 2', SOF2]], px: [['free16', 70, 16]] },
+    { do: 'Move one backbeat off 2 or 4 onto a 16th or 8th position while the hi-hat stays steady.',
+      links: [['A Drummer\'s Guide To Funk (Drumeo)', DGF]], px: [['free16', 70, 16]] },
+    { do: '16th-note ghost-note beats, one at a time, 70 BPM.',
+      links: [['Intermediate Ghost Notes (DrumLessons.com)', 'https://www.drumlessons.com/?p=4771']], px: [['free16', 70, 16]] },
+    { do: 'Pocket day: play one groove at 70 BPM and listen only for feel, not new notes.',
+      links: [['Free Funk Drumming Masterclass With Dennis Chambers (Drumeo)', 'https://drumeo.com/beat/?p=36310']], px: [['free16', 70, 16]] },
+    { do: 'Short funk fills: one or two beats, kick included. Revisit your fills from Week 6.',
+      links: [['Tips & Tricks For The Funky Drummer (Stanley Randolph, Drumeo)', 'https://www.drumeo.com/beat/stanley-randolph-drum-lessons/']], px: [['free16', 70, 16]] },
+    { do: 'Checkpoint 3: record 2 minutes of one 16th-note ghost-note groove, one half-time shuffle and one short fill.',
+      links: [['Your own recording', null]], px: [['free16', 70, 35], ['shuffle', 60, 15], ['backbeat16', 80, 10]], cp: 'cp3' }
+  ] }
+);
+
+/* Weeks 13 to 16 (Phase 4, Soloing), then the free days, skills, checkpoints, rules and resources. */
+var DLT = 'https://www.drumeo.com/beat/how-to-find-and-use-drumless-tracks-and-play-alongs';
+var PLAYALONG = 'https://www.drumeo.com/free-playalongs';
+var KICKFILLS = 'https://www.drumeo.com/beat/building-epic-fills-with-your-kick/';
+
+PLAN.weeks.push(
+  { n: 13, phase: 4, title: 'How solos work', days: [
+    { do: 'Learn the five solo situations. Write down which ones you\'re likely to meet at your jams (open, over hits, over a vamp, feature).',
+      links: [['How to build a drum solo (Jared Falk, MusicRadar)', 'https://musicradar.com/tuition/drums/how-to-build-a-drum-solo-605476']] },
+    { do: 'Use a groove as your theme and vary dynamics. Play 8 bars of funk groove and change one thing every 2 bars.',
+      links: [['Steve Smith\'s Best Tips For Drum Soloing (Drumeo)', 'https://www.drumeo.com/beat/steve-smith-art-of-drum-solo-tips/']], px: [['free16', 80, 8]] },
+    { do: 'Leave space: play 4 bars of groove, then 4 bars of rests and single hits.',
+      links: [['How To Craft And Execute Memorable Drum Solos (Drumeo)', 'https://www.drumeo.com/beat/how-to-craft-and-execute-memorable-drum-solos/']], px: [['free16', 80, 8]] },
+    { do: 'Keep the backbeat going and change only the kick and hi-hat every 2 bars: a groove solo.',
+      links: [['How to Play a Drum Solo (Drum Helper)', 'https://drumhelper.com/?p=17109']], px: [['free16', 80, 8]] },
+    { do: 'Hear the five solo types, then sketch a 4-bar version of two of them in a funk feel.',
+      links: [['The Art Of Drum Solos, part 1 (Steve Smith, Drumeo)', 'https://www.drumeo.com/beat/art-of-drum-solos-steve-smith-part-one/']] },
+    { do: 'Record 8 bars of groove-based solo.',
+      links: [['Your own recording', null]], px: [['free16', 80, 8]] }
+  ] },
+  { n: 14, phase: 4, title: 'Solo vocabulary', days: [
+    { do: 'Invent a 1-bar motif of 3–4 notes. Repeat it for 4 bars and change only the last note each time.',
+      links: [['5 Tips For Writing Drum Solos (Drumeo)', 'https://www.drumeo.com/beat/5-tips-for-writing-drum-solos/']], px: [['free16', 80, 4]] },
+    { do: 'Paradiddle accents on the toms: play a paradiddle with right-hand accents on one tom and left-hand accents on another. 60 BPM.',
+      links: [['16 Ways To Level Up Your Stick Control With Paradiddles (Drumeo)', 'https://www.drumeo.com/beat/16-ways-to-level-up-your-stick-control-with-paradiddles/']], px: [['para16', 60]] },
+    { do: 'Dynamics: write a 4-bar arc that starts with ghost notes, builds to accents and ends on a cymbal.',
+      links: [['The Right Way To Write A Drum Solo (Larnell Lewis, Drumeo)', 'https://drumeo.com/beat/?p=28253']], px: [['free16', 80, 4]] },
+    { do: 'Kick-driven phrases: add an approach note and a double kick into one of your Phase 2 fills.',
+      links: [['How To Build Epic, Kick-Driven Fills (Larnell Lewis, Drumeo)', KICKFILLS]], px: [['free16', 80, 4]] },
+    { do: 'Call and response: 1 bar of groove, then 1 bar answering it with the same notes placed differently around the kit.',
+      links: [['Your own phrases', null]], px: [['free16', 80, 8]] },
+    { do: 'Record 16 bars of ideas and pick the best 4 bars.',
+      links: [['Your own recording', null]], px: [['free16', 80, 16]] }
+  ] },
+  { n: 15, phase: 4, title: 'Build a 16-bar funk solo', days: [
+    { do: 'Plan on paper: four 4-bar sections. Statement (groove and motif), variation, development, climax and return to the groove.',
+      links: [['Drum solo structure ideas (Gear4music)', 'https://www.gear4music.com/blog/drum-solo/']] },
+    { do: 'Learn bars 1–4, the groove statement, at 80 BPM.',
+      links: [['Your plan', null]], px: [['free16', 80, 4]] },
+    { do: 'Learn bars 5–8, the variation: change the kick pattern and add ghost notes.',
+      links: [['Your plan', null]], px: [['free16', 80, 4]] },
+    { do: 'Learn bars 9–12, the development: toms, paradiddle accents, a fill from Phase 2.',
+      links: [['Your plan', null]], px: [['free16', 80, 4]] },
+    { do: 'Learn bars 13–16: build to a peak, drop back into the groove and finish on a clear hit.',
+      links: [['Your plan', null]], px: [['free16', 80, 4]] },
+    { do: 'Play all 16 bars with the click at 80 BPM, then at 90 BPM. Record it.',
+      links: [['Your own recording', null]], px: [['free16', 80, 16], ['free16', 90, 16]] }
+  ] },
+  { n: 16, phase: 4, title: 'Perform and improvise, checkpoint 4', days: [
+    { do: 'Improvise over a vamp: 8 bars of Funky Drummer groove, then 8 bars of solo built on your motif, over a drumless track. Set the BPM to match your track; the app listens with no click.',
+      links: [['How to find and use drumless tracks and play-alongs (Drumeo)', DLT]], px: [['free16', 80, 16, { click: 'off' }]] },
+    { do: 'Trade fours: 4 bars of solo, then 4 bars of groove. Keep time in the groove bars.',
+      links: [['9 free play-alongs (Drumeo)', PLAYALONG]], px: [['free16', 80, 16, { click: 'off' }]] },
+    { do: 'Open solo, 30 seconds with a clear start, middle and end, no written plan.',
+      links: [['Solos and Fills (Sheila E, MasterClass, paid)', 'https://www.masterclass.com/classes/sheila-e-teaches-drumming-and-percussion/chapters/solos-and-fills']], px: [['free16', 80, 10]] },
+    { do: 'Full set run: groove, fill, solo, groove, in one 3-minute take.',
+      links: [['Your own run-through', null]], px: [['free16', 80, 60]] },
+    { do: 'Dress rehearsal: record a full take on video with the click on 2 and 4 only.',
+      links: [['Your own recording', null]], px: [['free16', 80, 60, { click: '24' }]] },
+    { do: 'Checkpoint 4: watch all four checkpoint recordings in order and write your next three goals.',
+      links: [['Your recordings', null]], cp: 'cp4' }
+  ] }
+);
+
+/* The seventh day is free in every week. */
+PLAN.weeks.forEach(function (w) {
+  w.days.push({
+    do: w.n === 16
+      ? 'Final day: play the solo at your next jam.'
+      : 'Free day: 15 minutes of jamming along to funk tracks or revisiting anything that felt shaky. Metronome optional.',
+    links: [], sunday: true, px: w.n === 16 ? [] : [['free16', 80, 24, { click: 'off' }]]
+  });
+});
+
+var SESSION = [
+  { name: 'Warm-up', min: 3, what: 'Singles and doubles on a pad, 60–80 BPM, loose grip' },
+  { name: 'Focus', min: 8, what: 'The day\'s task from the weekly table' },
+  { name: 'Apply', min: 4, what: 'Play the focus with a metronome on the kit (or pad), then finish with something you already enjoy playing' }
+];
+
+var RULES = [
+  'Metronome on for everything except the free day (the seventh day of each week).',
+  'Start at a tempo that feels easy. Add 4 BPM only after three clean passes in a row.',
+  'The seventh day of every week is free: 15 minutes of jamming along to funk tracks or revisiting anything that felt shaky.',
+  'The sixth day of every week ends with a 60-second phone recording. Video shows tension and timing drift that you can\'t feel while playing.',
+  'Missed a day? Carry on with the next day\'s task. Don\'t double up.',
+  'The plan assumes a practice pad plus a kit or e-kit. Kit tasks can be played on the pad with the same sticking when you\'re away from the drums.',
+  'Links are free unless marked (paid).'
+];
+
+/* Basics checklist ("Covered when you can...") with a mic self-test where the sound can be judged. */
+var SKILLS = [
+  { skill: 'Stick grip and fulcrum', can: 'Hold the stick loosely, with free rebound and no white knuckles after 2 minutes of playing', weeks: '1' },
+  { skill: 'Stroke control', can: 'Play loud and soft strokes at the same tempo with even rebound', weeks: '1–3', test: ['loudsoft', 70] },
+  { skill: 'Single and double strokes', can: 'Play even 16ths with both at 80 BPM', weeks: '2', test: ['p16', 80] },
+  { skill: 'Paradiddle family', can: 'Play single, double, triple paradiddle and paradiddle-diddle at 80 BPM on the pad, then move them around the kit', weeks: '3, 6, 14', test: ['para16', 80] },
+  { skill: 'Flams and drags', can: 'Play flam, flam tap, flam accent, drag and single drag tap cleanly at 70 BPM', weeks: '4' },
+  { skill: 'Reading basic notation', can: 'Read a one-bar groove with 16th notes and count it aloud', weeks: '5' },
+  { skill: 'Fills', can: 'Play 8th- and 16th-note fills, with bass drum, that land on beat 1 with a crash', weeks: '5–8', test: ['fill', 70] },
+  { skill: 'Time', can: 'Play a groove with the click on beats 2 and 4 only and stay locked to it', weeks: '7–8', test: ['time24', 70] },
+  { skill: 'Ghost notes and dynamics', can: 'Keep ghost notes at a whisper under full-volume backbeats', weeks: '9–12' },
+  { skill: 'Funk grooves', can: 'Play a 16th-note hi-hat groove with syncopated kick and hi-hat openings', weeks: '10–12', test: ['backbeat16', 80] },
+  { skill: 'Drum solo', can: 'Play a planned 16-bar solo and improvise 8 bars over a vamp', weeks: '13–16' }
+];
+
+var CHECKPOINTS = [
+  { id: 'cp1', text: 'Checkpoint 1, week 4: 60-second pad recording with even volume between hands, loose grip and steady tempo', w: 4 },
+  { id: 'cp2', text: 'Checkpoint 2, week 8: 90 seconds of groove and fills where every fill lands on beat 1 with the click on 2 and 4 only', w: 8 },
+  { id: 'cp3', text: 'Checkpoint 3, week 12: 2-minute funk recording with ghost notes clearly softer than backbeats, and Funky Drummer at 80 BPM', w: 12 },
+  { id: 'cp4', text: 'Checkpoint 4, week 16: full take of groove, fill, 16-bar solo and a return to the groove', w: 16 }
+];
+
+var AFTER16 = [
+  { text: 'Learn the other 28 rudiments, one a week.', links: [['Vic Firth 40 Essential Rudiments', VF], ['Drumeo rudiments index', 'https://www.drumeo.com/beat/rudiments/']] },
+  { text: 'Work through George Lawrence Stone\'s book Stick Control (paid) for hand patterns and weak-hand development.', links: [] },
+  { text: 'Go deeper on funk.', links: [['David Garibaldi lesson (Drumeo)', 'https://www.drumeo.com/beat/david-garibaldi-drum-lessons/'],
+      ['Funk and R&B Drums (Berklee Online, paid)', 'https://online.berklee.edu/courses/funk-r-b-drums'],
+      ['Ghost Note Mastery (Stanton Moore, paid)', 'https://www.stantonmooredrumacademy.com/ghost-note-mastery']] },
+  { text: 'Keep the weekly recording habit.', links: [] }
+];
+
+var RESOURCES = [
+  ['Everything', 'The Drumeo Beat', 'https://www.drumeo.com/beat/', 'Free', 'Articles with video on grip, fills, funk and soloing'],
+  ['Beginner method', 'Zildjian Drum Set Method', ZM, 'Free', '20 video lessons, downloadable book and groove library'],
+  ['Rudiments', 'Vic Firth 40 Essential Rudiments', VF, 'Free', 'Videos and play-along tracks for every rudiment'],
+  ['Rudiments', 'PAS International Drum Rudiments', PAS, 'Free', 'The official list with notation'],
+  ['Rudiments', 'Drumeo rudiments index', 'https://www.drumeo.com/beat/rudiments/', 'Free', 'A video page for each rudiment'],
+  ['Free lessons', 'FreeDrumLessons.com', 'https://freedrumlessons.com/drum-lessons/how-to-play-drums.php', 'Free', 'Notation, fills, funk beats, grip'],
+  ['Free lessons', 'DrumLessons.com', 'https://www.drumlessons.com/?p=63', 'Free', 'Counting, ghost notes, broken 16th-note fills'],
+  ['Interactive lessons', 'Virtual Drumming', 'https://www.virtualdrumming.com/drums/drums-basic-beats/drums-funk-beats.html', 'Free', 'Moeller strokes, paradiddles and funk beats with sheet music'],
+  ['Funk', 'School of Funk (Jim Payne)', 'https://funkydrummer.com/school-of-funk/lesson-2', 'Free pages; book sold separately', 'Ghost notes and 16th-note hi-hat grooves'],
+  ['Funk', 'Roland V-Drums lessons', 'https://www.roland.com/us/rtv/drums_percussion/v-drums_lessons/1000/?lang=en-US', 'Free', 'Gregg Bissonette lessons on funk, linear funk and the Purdie shuffle'],
+  ['Funk', 'Ain\'t It Funky (Melodics)', 'https://melodics.com/blog/aint-it-funky-learn-the-fundamentals-of-funk-drumming', 'Article free; course in the Melodics app', 'Clyde Stubblefield-style ghost notes and open hats'],
+  ['Ghost notes', 'Ghost Notes 101 (Modern Drummer)', 'https://www.moderndrummer.com/?p=60819', 'Free', 'Six ghost-note elements for 16th-note music'],
+  ['Solos', 'How to build a drum solo (MusicRadar)', 'https://musicradar.com/tuition/drums/how-to-build-a-drum-solo-605476', 'Free', 'Solo structures for five playing situations'],
+  ['Practice', 'How To Build A Drumming Practice Routine (Drumeo)', 'https://www.drumeo.com/beat/drum-practice-routine/', 'Free', 'Planning and sticking to a routine'],
+  ['Play-alongs', '9 free play-alongs (Drumeo)', PLAYALONG, 'Free', 'Drumless tracks for fills, funk and solo practice'],
+  ['Funk, deeper', 'Funk and R&B Drums (Berklee Online)', 'https://online.berklee.edu/courses/funk-r-b-drums', 'Paid', 'A structured funk and R&B course'],
+  ['Ghost notes, deeper', 'Ghost Note Mastery (Stanton Moore)', 'https://www.stantonmooredrumacademy.com/ghost-note-mastery', 'Paid', 'Ghost-note styles of funk pioneers'],
+  ['Solos, deeper', 'Solos and Fills (Sheila E, MasterClass)', 'https://www.masterclass.com/classes/sheila-e-teaches-drumming-and-percussion/chapters/solos-and-fills', 'Paid', 'When to solo and when to hold back']
+];
+
+/* App shell: storage, dates, router and the Today, Checklist and Progress views. */
+var App = (function () {
+'use strict';
+var E = Engine;
+var KEY = 'drumpath.v1';
+var NDAYS = PLAN.weeks.length * 7;
+var VIEWS = ['today', 'practice', 'checklist', 'progress'];
+var app = {};
+
+function $(sel, root) { return (root || document).querySelector(sel); }
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+}
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function fmtDur(sec) { sec = Math.round(sec); var m = Math.floor(sec / 60), s = sec % 60; return m + ':' + (s < 10 ? '0' : '') + s; }
+
+/* ---------- Days ---------- */
+/* Days run 1 to 112 with no calendar dates. Internally a day is index 0 to 111, task id w{week}d{0..6}. */
+function lin(w, d) { return (w - 1) * 7 + d; }
+function fromLin(i) { return { w: Math.floor(i / 7) + 1, d: i % 7 }; }
+function tid(w, d) { return 'w' + w + 'd' + d; }
+function dayNo(w, d) { return lin(w, d) + 1; }
+function lastDone() {
+  for (var i = NDAYS - 1; i >= 0; i--) { var p = fromLin(i); if (S.isDone(tid(p.w, p.d))) return i; }
+  return -1;
+}
+/* The day to do next: the one after the last you ticked off (missed days are skipped, as the plan says). */
+function currentIdx() { return Math.min(lastDone() + 1, NDAYS - 1); }
+
+/* ---------- Store ---------- */
+var S = { data: null, persisted: true };
+function blank() { return { v: 1, done: {}, takes: [], settings: { gate: -42, latency: 0, vol: 0.7 }, last: {} }; }
+function mergeInto(d, o) {
+  if (!o || typeof o !== 'object') return d;
+  if (o.done && typeof o.done === 'object') Object.keys(o.done).forEach(function (k) { if (o.done[k]) d.done[k] = true; });
+  if (Array.isArray(o.takes)) d.takes = o.takes.filter(function (t) { return t && typeof t.exId === 'string' && typeof t.score === 'number'; }).slice(-600);
+  if (o.settings && typeof o.settings === 'object') {
+    ['gate', 'latency', 'vol'].forEach(function (k) { if (typeof o.settings[k] === 'number' && isFinite(o.settings[k])) d.settings[k] = o.settings[k]; });
+  }
+  if (o.last && typeof o.last === 'object') d.last = o.last;
+  return d;
+}
+S.load = function () {
+  var d = blank();
+  try { localStorage.setItem(KEY + '.probe', '1'); localStorage.removeItem(KEY + '.probe'); } catch (e) { S.persisted = false; }
+  if (S.persisted) {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) mergeInto(d, JSON.parse(raw));
+    } catch (e2) { /* unreadable saved data: start clean */ }
+  }
+  S.data = d;
+};
+S.save = function () {
+  try { localStorage.setItem(KEY, JSON.stringify(S.data)); S.persisted = true; } catch (e) { S.persisted = false; }
+  showWarn();
+};
+S.isDone = function (id) { return !!S.data.done[id]; };
+S.setDone = function (id, v) { if (v) S.data.done[id] = true; else delete S.data.done[id]; S.save(); };
+S.addTake = function (t) { S.data.takes.push(t); if (S.data.takes.length > 600) S.data.takes.shift(); S.save(); };
+S.takesFor = function (exId) { return S.data.takes.filter(function (t) { return t.exId === exId; }); };
+S.bestPass = function (exId, bpm) {
+  var best = null;
+  S.data.takes.forEach(function (t) {
+    if (t.exId === exId && t.pass && t.bpm >= bpm && (!best || t.score > best.score)) best = t;
+  });
+  return best;
+};
+S.exportJSON = function () { return JSON.stringify(S.data, null, 2); };
+S.importJSON = function (txt) {
+  var o = JSON.parse(txt);
+  var d = mergeInto(blank(), o);
+  S.data = d; S.save();
+};
+S.reset = function () { S.data = blank(); S.save(); };
+app.S = S;
+
+function showWarn() {
+  var w = $('#warn');
+  if (!w) return;
+  if (S.persisted) { w.hidden = true; return; }
+  w.hidden = false;
+  w.textContent = 'This browser is not letting the page save your progress (a private window, or site data blocked). Use Export on the Progress tab before you close it.';
+}
+
+/* ---------- Shared helpers ---------- */
+function linksHtml(links) {
+  if (!links || !links.length) return '';
+  return '<ul class="links">' + links.map(function (l) {
+    return l[1]
+      ? '<li><a class="ext" href="' + esc(l[1]) + '" target="_blank" rel="noopener">' + esc(l[0]) + '</a></li>'
+      : '<li class="plain">' + esc(l[0]) + '</li>';
+  }).join('') + '</ul>';
+}
+function presetInfo(p) {
+  var ex = E.EXERCISES[p[0]], opts = p[3] || {};
+  var reps = p[2] || ex.reps;
+  var click = opts.click || 'on';
+  var plan = E.planTake(ex, { bpm: p[1], reps: reps, tStart: 0, click: click });
+  var clickTxt = click === 'off' ? 'no click' : (click === '24' || ex.clickBeats ? 'click on 2 and 4' : 'click on every beat');
+  return { exId: p[0], ex: ex, bpm: p[1], reps: reps, click: click, dur: plan.tEnd - plan.t0, clickTxt: clickTxt };
+}
+function weekDone(w) {
+  var n = 0;
+  for (var d = 0; d < 7; d++) if (S.isDone(tid(w, d))) n++;
+  return n;
+}
+function doneCount() {
+  var n = 0;
+  for (var w = 1; w <= PLAN.weeks.length; w++) n += weekDone(w);
+  return n;
+}
+function skillsDone() { return SKILLS.filter(function (s, i) { return S.isDone('s' + i); }).length; }
+function cpDone() { return CHECKPOINTS.filter(function (c) { return S.isDone(c.id); }).length; }
+function streak() {
+  var i = lastDone(), n = 0;
+  for (; i >= 0; i--) {
+    var p = fromLin(i);
+    if (S.isDone(tid(p.w, p.d))) n++;
+    else if (p.d === 6) continue;
+    else break;
+  }
+  return n;
+}
+
+/* ---------- Today ---------- */
+var sel = 0;
+var rulesOpen = false;
+
+function renderToday() {
+  var s = fromLin(sel), wk = PLAN.weeks[s.w - 1], day = wk.days[s.d], ph = PLAN.phases[wk.phase - 1];
+  var cur = currentIdx();
+  var id = tid(s.w, s.d), done = S.isDone(id);
+  var h = '';
+  if (lastDone() === NDAYS - 1) {
+    h += '<div class="banner">All 16 weeks are done. See &ldquo;After week 16&rdquo; on the Checklist tab, and keep the weekly recording habit.</div>';
+  }
+  h += '<div class="datebar"><div><div class="eyebrow">Phase ' + ph.n + ' &middot; ' + esc(ph.name) + ' &middot; Week ' + s.w + ' of 16</div>' +
+    '<h2>Day ' + (sel + 1) + '</h2><p class="muted">' + esc(wk.title) + (s.d === 6 ? ' &middot; free day' : '') + '</p></div>' +
+    '<div class="row">' +
+    '<button class="btn ghost small" data-act="nav" data-to="' + (sel - 1) + '"' + (sel <= 0 ? ' disabled' : '') + '>&larr; Previous</button>' +
+    '<button class="btn ghost small" data-act="nav" data-to="' + (sel + 1) + '"' + (sel >= NDAYS - 1 ? ' disabled' : '') + '>Next &rarr;</button>' +
+    (sel !== cur ? '<button class="btn small" data-act="nav" data-to="' + cur + '">Go to Day ' + (cur + 1) + '</button>' : '') +
+    '</div></div>';
+
+  h += '<div class="weekstrip" role="group" aria-label="Days of this week">';
+  for (var d = 0; d < 7; d++) {
+    var li = lin(s.w, d), dn = S.isDone(tid(s.w, d));
+    h += '<button class="dchip' + (dn ? ' done' : '') + (li === cur ? ' today' : '') + '" data-act="nav" data-to="' + li + '"' +
+      (li === sel ? ' aria-current="true"' : '') + ' aria-label="Day ' + (li + 1) + (d === 6 ? ', free day' : '') + (dn ? ', done' : '') + '">' +
+      '<small>Day</small><b>' + (li + 1) + '</b><small>' + (dn ? 'done' : (li === cur ? 'next up' : (d === 6 ? 'free' : '&nbsp;'))) + '</small></button>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><div class="shape">' + SESSION.map(function (x) {
+    return '<div><b>' + esc(x.name) + ' &middot; ' + x.min + ' min</b><span>' + esc(x.what) + '</span></div>';
+  }).join('') + '</div>';
+  h += '<p class="dotask">' + esc(day.do) + '</p>' + linksHtml(day.links);
+  if (day.cp) {
+    var cp = CHECKPOINTS.filter(function (c) { return c.id === day.cp; })[0];
+    h += '<div class="banner" style="margin-bottom:16px"><label class="done-row"><input type="checkbox" data-check="' + cp.id + '"' + (S.isDone(cp.id) ? ' checked' : '') + '> ' + esc(cp.text) + '</label></div>';
+  }
+  h += '<label class="done-row"><input type="checkbox" data-check="' + id + '"' + (done ? ' checked' : '') + '> Done for this day</label>';
+
+  if (day.px && day.px.length) {
+    h += '<div class="presets"><div class="eyebrow">Listen to me play this</div>';
+    day.px.forEach(function (p, i) {
+      var inf = presetInfo(p), best = S.bestPass(inf.exId, inf.bpm);
+      h += '<div class="preset"><div><div class="name">' + esc(inf.ex.name) + '</div>' +
+        '<div class="sub mono">' + inf.bpm + ' BPM &middot; ' + fmtDur(inf.dur) + ' &middot; ' + esc(inf.clickTxt) + '</div></div>' +
+        '<div class="row">' + (best ? '<span class="pill ok">Passed, best ' + best.score + '</span>' : '') +
+        '<button class="btn brass" data-act="practice" data-px="' + s.w + ',' + s.d + ',' + i + '">Start mic practice</button></div></div>';
+    });
+    h += '</div>';
+  } else {
+    h += '<div class="presets"><p class="tip">This task is reading, listening or planning, so there is nothing for the microphone to score. Tick it off when you have done it.</p>' +
+      '<div><button class="btn ghost small" data-act="goto" data-view="practice">Open the practice tool anyway</button></div></div>';
+  }
+  h += '</div>';
+
+  h += '<details class="card" id="rules"' + (rulesOpen ? ' open' : '') + '><summary><h3 style="margin:0">Practice rules</h3></summary><ol class="rules">' +
+    RULES.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ol></details>';
+  h += '<div class="card"><div class="eyebrow">Phase ' + ph.n + ': ' + esc(ph.name) + ' (weeks ' + esc(ph.weeks) + ')</div>' +
+    '<p class="phase-intro" style="margin-top:6px">' + esc(ph.intro) + '</p>' +
+    '<p class="tip" style="margin-top:8px"><b>Goal:</b> ' + esc(ph.goal) + '. <b>Checkpoint:</b> ' + esc(ph.checkpoint) + '.</p></div>';
+  $('#view-today').innerHTML = h;
+}
+
+/* ---------- Checklist ---------- */
+var openWeeks = null;
+
+function dayItem(w, d) {
+  var day = PLAN.weeks[w - 1].days[d], id = tid(w, d), done = S.isDone(id);
+  var tag = (d === 6 ? 'free day' : '') + (day.cp ? 'checkpoint' : '');
+  return '<li class="' + (done ? 'done' : '') + '"><input type="checkbox" data-check="' + id + '"' + (done ? ' checked' : '') +
+    ' aria-label="Day ' + dayNo(w, d) + ' done"><div>' +
+    '<span class="dname">Day ' + dayNo(w, d) + '</span>' + (tag ? '<span class="ddate">' + tag + '</span>' : '') +
+    '<p>' + esc(day.do) + '</p>' + linksHtml(day.links) +
+    (day.px && day.px.length ? '<button class="btn ghost small" data-act="practice" data-px="' + w + ',' + d + ',0">Mic practice</button>' : '') +
+    '</div></li>';
+}
+
+function renderChecklist() {
+  if (!openWeeks) {
+    openWeeks = {};
+    openWeeks[fromLin(currentIdx()).w] = true;
+  }
+  var total = doneCount();
+  var h = '<div class="card"><div class="week-head"><h3>Overall</h3><span class="count">' + total + ' of ' + NDAYS + ' days</span></div>' +
+    '<div class="bar-row" style="margin-top:10px"><div class="meter"><i style="width:' + Math.round(100 * total / NDAYS) + '%"></i></div></div>' +
+    '<p class="tip" style="margin-top:10px">Basics ' + skillsDone() + ' of ' + SKILLS.length + ' &middot; Checkpoints ' + cpDone() + ' of ' + CHECKPOINTS.length + '</p></div>';
+
+  /* Basics */
+  h += '<div class="card"><h3>Basics checklist</h3><p class="tip" style="margin-bottom:6px">Tick a row when you can do what it says. Rows with a mic test can listen to you and tell you whether you are there yet.</p><ul class="skills">';
+  SKILLS.forEach(function (sk, i) {
+    var id = 's' + i, done = S.isDone(id), test = '';
+    if (sk.test) {
+      var ex = E.EXERCISES[sk.test[0]], best = S.bestPass(sk.test[0], sk.test[1]);
+      test = '<div class="row" style="margin-top:8px">' +
+        (best ? '<span class="pill ok">Mic test passed, ' + best.score + ' at ' + best.bpm + ' BPM</span>' : '<span class="pill">Mic test not passed yet</span>') +
+        '<button class="btn ghost small" data-act="skilltest" data-i="' + i + '">Test: ' + esc(ex.name) + ', ' + sk.test[1] + ' BPM</button></div>';
+    }
+    h += '<li><input type="checkbox" data-check="' + id + '"' + (done ? ' checked' : '') + ' aria-label="' + esc(sk.skill) + '"><div>' +
+      '<div class="skill-name">' + esc(sk.skill) + '</div><div>Covered when you can: ' + esc(sk.can) + '.</div>' +
+      '<div class="skill-meta">Weeks ' + esc(sk.weeks) + '</div>' + test + '</div></li>';
+  });
+  h += '</ul></div>';
+
+  /* Checkpoints */
+  h += '<div class="card"><h3>Checkpoints</h3><ul class="cplist">' + CHECKPOINTS.map(function (c) {
+    var done = S.isDone(c.id);
+    return '<li><input type="checkbox" data-check="' + c.id + '"' + (done ? ' checked' : '') + ' aria-label="' + esc('Checkpoint ' + c.w) + '"><div>' + esc(c.text) + '.</div></li>';
+  }).join('') + '</ul></div>';
+
+  /* Weekly tasks by phase */
+  PLAN.phases.forEach(function (ph) {
+    h += '<div><h3 style="font-size:26px">Phase ' + ph.n + ': ' + esc(ph.name) + '</h3><p class="phase-intro" style="margin:4px 0 12px">' + esc(ph.intro) + '</p><div class="stack">';
+    PLAN.weeks.filter(function (w) { return w.phase === ph.n; }).forEach(function (w) {
+      var n = weekDone(w.n);
+      h += '<details class="card" data-week="' + w.n + '"' + (openWeeks[w.n] ? ' open' : '') + '><summary><span class="week-head"><h3>Week ' + w.n + ': ' + esc(w.title) + '</h3>' +
+        '<span class="count">' + n + '/7 &middot; days ' + (lin(w.n, 0) + 1) + ' to ' + (lin(w.n, 0) + 7) + '</span></span></summary><ul class="daylist">';
+      for (var d = 0; d < 7; d++) h += dayItem(w.n, d);
+      h += '</ul></details>';
+    });
+    h += '</div></div>';
+  });
+
+  /* After week 16 */
+  h += '<div class="card"><h3>After week 16</h3><ul class="afterlist">' + AFTER16.map(function (a, i) {
+    var id = 'a' + i, done = S.isDone(id);
+    return '<li><input type="checkbox" data-check="' + id + '"' + (done ? ' checked' : '') + ' aria-label="After week 16 item ' + (i + 1) + '"><div><p>' + esc(a.text) + '</p>' + linksHtml(a.links) + '</div></li>';
+  }).join('') + '</ul></div>';
+
+  /* Resources */
+  h += '<div class="card"><h3>Resources</h3><div class="tablewrap"><table><thead><tr><th>Use</th><th>Resource</th><th>Cost</th><th>Best for</th></tr></thead><tbody>' +
+    RESOURCES.map(function (r) {
+      return '<tr><td>' + esc(r[0]) + '</td><td><a class="ext" href="' + esc(r[2]) + '" target="_blank" rel="noopener">' + esc(r[1]) + '</a></td><td>' + esc(r[3]) + '</td><td>' + esc(r[4]) + '</td></tr>';
+    }).join('') + '</tbody></table></div></div>';
+  $('#view-checklist').innerHTML = h;
+}
+
+/* ---------- Progress ---------- */
+var trendEx = null;
+
+function trendChart(takes) {
+  var W = 640, H = 190, pl = 34, pr = 10, pt = 10, pb = 22, n = takes.length;
+  function X(i) { return n < 2 ? pl + (W - pl - pr) / 2 : pl + i / (n - 1) * (W - pl - pr); }
+  function Y(v) { return pt + (1 - v / 100) * (H - pt - pb); }
+  var g = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Score of each take over time">';
+  [0, 50, 100].forEach(function (v) { g += '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/><text x="' + (pl - 6) + '" y="' + (Y(v) + 3) + '" text-anchor="end">' + v + '</text>'; });
+  g += '<line class="passline" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(80) + '" y2="' + Y(80) + '"/><text x="' + (W - pr) + '" y="' + (Y(80) - 4) + '" text-anchor="end">pass 80</text>';
+  g += '<polyline class="line" points="' + takes.map(function (t, i) { return X(i).toFixed(1) + ',' + Y(t.score).toFixed(1); }).join(' ') + '"/>';
+  takes.forEach(function (t, i) {
+    g += '<circle class="' + (t.pass ? 'pt-ok' : 'pt-late') + '" cx="' + X(i).toFixed(1) + '" cy="' + Y(t.score).toFixed(1) + '" r="4"><title>' + esc(t.score + ' at ' + t.bpm + ' BPM') + '</title></circle>';
+  });
+  g += '<text x="' + pl + '" y="' + (H - 6) + '">take 1</text><text x="' + (W - pr) + '" y="' + (H - 6) + '" text-anchor="end">take ' + n + '</text></svg>';
+  return g;
+}
+
+function renderProgress() {
+  var takes = S.data.takes, total = doneCount();
+  var passes = takes.filter(function (t) { return t.pass; }).length;
+  var best = takes.reduce(function (m, t) { return Math.max(m, t.score); }, 0);
+  var h = '<div class="tiles">' +
+    '<div class="tile"><b>' + total + '/' + NDAYS + '</b><span>days done</span></div>' +
+    '<div class="tile"><b>' + streak() + '</b><span>days in a row</span></div>' +
+    '<div class="tile"><b>' + takes.length + '</b><span>mic takes</span></div>' +
+    '<div class="tile"><b>' + passes + '</b><span>clean passes</span></div>' +
+    '<div class="tile"><b>' + skillsDone() + '/' + SKILLS.length + '</b><span>basics covered</span></div>' +
+    '<div class="tile"><b>' + cpDone() + '/' + CHECKPOINTS.length + '</b><span>checkpoints</span></div></div>';
+
+  h += '<div class="card"><h3>Weeks</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 24px">';
+  PLAN.weeks.forEach(function (w) {
+    var n = weekDone(w.n);
+    h += '<div class="bar-row"><span class="mono" style="width:34px;font-size:13px">W' + w.n + '</span><div class="meter"><i style="width:' + Math.round(100 * n / 7) + '%"></i></div><span class="mono muted" style="width:28px;font-size:13px">' + n + '/7</span></div>';
+  });
+  h += '</div></div>';
+
+  h += '<div class="card"><h3>Mic scores</h3>';
+  if (!takes.length) {
+    h += '<p class="muted">No takes yet. Start one from the Today or Practice tab. Your best score so far will show here.</p>';
+  } else {
+    var exIds = E.EX_ORDER.filter(function (id) { return S.takesFor(id).length; });
+    if (!trendEx || exIds.indexOf(trendEx) < 0) trendEx = exIds[exIds.length - 1];
+    var sub = S.takesFor(trendEx);
+    h += '<div class="field" style="max-width:380px"><label for="trend-ex">Exercise</label><select id="trend-ex" data-sel="trend">' +
+      exIds.map(function (id) { return '<option value="' + id + '"' + (id === trendEx ? ' selected' : '') + '>' + esc(E.EXERCISES[id].name) + ' (' + S.takesFor(id).length + ')</option>'; }).join('') + '</select></div>';
+    h += trendChart(sub.slice(-40));
+    h += '<p class="tip" style="margin:6px 0 14px">Green dots passed (score 80 or more with 90% of notes hit). Best score overall: ' + best + '.</p>';
+    h += '<div class="tablewrap"><table><thead><tr><th>Day</th><th>Exercise</th><th>BPM</th><th>Score</th><th>Spread</th><th>Offset</th></tr></thead><tbody>' +
+      takes.slice(-12).reverse().map(function (t) {
+        return '<tr><td>' + (t.day ? 'Day ' + t.day : 'Free practice') + '</td><td>' + esc((E.EXERCISES[t.exId] || { name: t.exId }).name) + (t.kind === 'recording' ? ' (recording)' : '') + '</td><td class="mono">' + t.bpm + '</td>' +
+          '<td class="mono"><b>' + t.score + '</b> ' + (t.pass ? '<span class="pill ok">pass</span>' : '') + '</td>' +
+          '<td class="mono">' + (t.sdErr !== undefined ? t.sdErr + ' ms' : '') + '</td><td class="mono">' + (t.meanErr !== undefined ? (t.meanErr > 0 ? '+' : '') + t.meanErr + ' ms' : '') + '</td></tr>';
+      }).join('') + '</tbody></table></div>';
+  }
+  h += '</div>';
+
+  h += '<div class="card"><h3>Your data</h3><p class="tip" style="margin-bottom:10px">Progress is stored in this browser only. Export a backup now and then, or to move to another computer.</p>' +
+    '<div class="row"><button class="btn ghost" data-act="export">Export backup</button>' +
+    '<label class="btn ghost" style="cursor:pointer">Import backup<input type="file" accept="application/json,.json" data-file="import" style="display:none"></label>' +
+    '<button class="btn danger" data-act="reset">Erase everything</button></div><p id="data-msg" class="tip" style="margin-top:10px" aria-live="polite"></p></div>';
+  $('#view-progress').innerHTML = h;
+}
+
+/* ---------- Router and events ---------- */
+var current = 'today';
+var resetArmed = false;
+
+function render(view) {
+  if (view === 'today') renderToday();
+  else if (view === 'checklist') renderChecklist();
+  else if (view === 'progress') renderProgress();
+}
+function go(view) {
+  if (VIEWS.indexOf(view) < 0) view = 'today';
+  current = view;
+  VIEWS.forEach(function (v) {
+    var sec = $('#view-' + v);
+    sec.hidden = v !== view;
+    var tab = document.querySelector('.tab[data-view="' + v + '"]');
+    if (tab) tab.setAttribute('aria-selected', v === view ? 'true' : 'false');
+  });
+  render(view);
+  if (typeof Practice !== 'undefined') { if (view === 'practice') Practice.show(); else Practice.hide(); }
+  try { history.replaceState(null, '', '#' + view); } catch (e) { /* file URLs may refuse */ }
+  window.scrollTo(0, 0);
+}
+function refresh() { render(current); }
+
+function openPractice(preset) {
+  go('practice');
+  if (typeof Practice !== 'undefined') Practice.open(preset);
+}
+function setData(msg) { var m = $('#data-msg'); if (m) m.textContent = msg; }
+
+function onClick(e) {
+  var t = e.target.closest ? e.target.closest('[data-act]') : null;
+  if (!t) return;
+  var a = t.getAttribute('data-act');
+  if (a === 'tab' || a === 'goto') go(t.getAttribute('data-view'));
+  else if (a === 'nav') { sel = clamp(parseInt(t.getAttribute('data-to'), 10), 0, NDAYS - 1); renderToday(); }
+  else if (a === 'practice') {
+    var q = t.getAttribute('data-px').split(',').map(Number);
+    var p = PLAN.weeks[q[0] - 1].days[q[1]].px[q[2]], inf = presetInfo(p);
+    openPractice({ exId: inf.exId, bpm: inf.bpm, reps: inf.reps, click: inf.click, day: { w: q[0], d: q[1] } });
+  } else if (a === 'skilltest') {
+    var sk = SKILLS[parseInt(t.getAttribute('data-i'), 10)];
+    openPractice({ exId: sk.test[0], bpm: sk.test[1], reps: E.EXERCISES[sk.test[0]].reps, click: 'on', day: null });
+  } else if (a === 'export') {
+    try {
+      var blob = new Blob([S.exportJSON()], { type: 'application/json' });
+      var link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'drummer-path-progress.json';
+      document.body.appendChild(link); link.click(); link.remove();
+      setTimeout(function () { URL.revokeObjectURL(link.href); }, 2000);
+      setData('Backup saved to your downloads folder.');
+    } catch (err) { setData('Could not create the backup file: ' + err.message); }
+  } else if (a === 'reset') {
+    if (!resetArmed) {
+      resetArmed = true; t.textContent = 'Click again to erase';
+      setTimeout(function () { resetArmed = false; if (t.isConnected) t.textContent = 'Erase everything'; }, 4000);
+    } else { resetArmed = false; S.reset(); renderProgress(); setData('Everything was erased.'); }
+  }
+}
+function onChange(e) {
+  var t = e.target;
+  if (t.matches && t.matches('[data-check]')) {
+    S.setDone(t.getAttribute('data-check'), t.checked);
+    refresh();
+  } else if (t.matches && t.matches('[data-sel="trend"]')) {
+    trendEx = t.value; renderProgress();
+  } else if (t.matches && t.matches('[data-file="import"]') && t.files && t.files[0]) {
+    var r = new FileReader();
+    r.onload = function () {
+      try { S.importJSON(String(r.result)); renderProgress(); setData('Backup imported.'); }
+      catch (err) { setData('That file is not a valid backup.'); }
+    };
+    r.readAsText(t.files[0]);
+  }
+}
+function onToggle(e) {
+  var d = e.target;
+  if (d && d.matches && d.matches('details[data-week]') && openWeeks) {
+    if (d.open) openWeeks[d.getAttribute('data-week')] = true; else delete openWeeks[d.getAttribute('data-week')];
+  } else if (d && d.id === 'rules') rulesOpen = d.open;
+}
+
+app.start = function () {
+  S.load();
+  showWarn();
+  sel = currentIdx();
+  document.addEventListener('click', onClick);
+  document.addEventListener('change', onChange);
+  document.addEventListener('toggle', onToggle, true);
+  if (typeof Practice !== 'undefined') Practice.mount($('#view-practice'));
+  var h = (location.hash || '').replace('#', '');
+  go(VIEWS.indexOf(h) >= 0 ? h : 'today');
+};
+app.go = go;
+app.refresh = refresh;
+app.markDone = function (id) { S.setDone(id, true); refresh(); };
+app.fmtDur = fmtDur;
+app.esc = esc;
+app._state = function () { return { sel: sel, current: current }; };
+return app;
+})();
+
+/* Practice tab: microphone capture, metronome, live lane, scoring display, calibration, recording check. */
+var Practice = (function () {
+'use strict';
+var E = Engine, S = App.S, esc = App.esc, fmtDur = App.fmtDur;
+var EX = E.EXERCISES;
+
+var P = { exId: 'p8', bpm: 60, reps: 8, click: 'on', day: null };
+var root = null, el = {};
+var mic = { ctx: null, stream: null, node: null, proc: null, det: null, out: null, buf: null, on: false, level: -90, disp: -90, using: '', starting: null, loop: false };
+var live = null;
+var calib = null;
+var visible = false;
+var colors = null;
+var flashTimer = 0;
+
+function $(id) { return document.getElementById(id); }
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+function round1(v) { return Math.round(v * 10) / 10; }
+
+/* ---------- Markup ---------- */
+function build() {
+  var groups = {}, order = [];
+  E.EX_ORDER.forEach(function (id) {
+    var g = EX[id].group;
+    if (!groups[g]) { groups[g] = []; order.push(g); }
+    groups[g].push(id);
+  });
+  var opts = order.map(function (g) {
+    return '<optgroup label="' + esc(g) + '">' + groups[g].map(function (id) { return '<option value="' + id + '">' + esc(EX[id].name) + '</option>'; }).join('') + '</optgroup>';
+  }).join('');
+
+  root.innerHTML =
+  '<div class="practice">' +
+    '<div class="card p-ex">' +
+      '<h3>Exercise</h3>' +
+      '<div class="field"><label for="p-ex">Pattern</label><select id="p-ex">' + opts + '</select></div>' +
+      '<p class="tip" id="p-tip"></p>' +
+      '<div id="p-pattern" style="margin-top:8px"></div>' +
+      '<div class="field" style="margin-top:16px"><label for="p-bpm">Tempo (BPM)</label>' +
+        '<div class="bpm"><button class="btn ghost" id="p-minus" aria-label="Slower by 4 BPM">&minus;</button><input id="p-bpm" type="number" inputmode="numeric" min="40" max="200" step="1"><button class="btn ghost" id="p-plus" aria-label="Faster by 4 BPM">+</button></div></div>' +
+      '<div class="field"><label for="p-reps">Repeats</label><div class="row"><input id="p-reps" type="number" inputmode="numeric" min="1" max="300" step="1" style="width:96px"><span class="mono muted" id="p-dur"></span></div></div>' +
+      '<div class="field"><span class="lab" id="p-click-lab">Click</span><div class="seg" id="p-click" role="group" aria-labelledby="p-click-lab"></div><p class="tip" id="p-click-tip"></p></div>' +
+    '</div>' +
+
+    '<div class="stack p-stage">' +
+      '<div class="card stage">' +
+        '<div class="stagehead"><div><div class="eyebrow" id="s-group"></div><h3 id="s-name"></h3></div><div class="bigbpm mono" id="s-bpm"></div></div>' +
+        '<div class="row spread" style="margin-bottom:10px"><div class="beats" id="s-beats" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="status" id="s-msg" role="status" aria-live="polite">Ready.</div></div>' +
+        '<div class="lanewrap"><canvas class="lane" id="s-lane" role="img" aria-label="Rhythm lane. Expected notes scroll toward the line on the left, and your hits appear as coloured marks."></canvas></div>' +
+        '<div class="readout"><div class="last" id="s-last">&nbsp;</div><div class="mono muted" id="s-count"></div></div>' +
+        '<div class="progress"><i id="s-prog"></i></div>' +
+        '<div class="legend"><span style="--c:var(--ok)">Within 30 ms</span><span style="--c:var(--early)">Early</span><span style="--c:var(--late)">Late</span><span style="--c:var(--bad)">Extra hit</span><span style="--c:var(--muted)">Fill / count-in</span></div>' +
+        '<div class="row" style="margin-top:16px"><button class="btn brass" id="s-go">Start take</button><span class="tip" id="s-hint"></span></div>' +
+      '</div>' +
+      '<div class="card" id="p-result" hidden></div>' +
+    '</div>' +
+
+    '<div class="stack p-mic">' +
+      '<div class="card">' +
+        '<h3>Microphone</h3>' +
+        '<div class="row"><button class="btn" id="m-btn">Enable microphone</button><span class="flash" id="m-flash" title="Flashes on each hit heard"></span></div>' +
+        '<div class="status" id="m-status" role="status" aria-live="polite" style="margin-top:10px">Not listening yet. Your browser will ask for permission.</div>' +
+        '<div class="field" style="margin-top:14px"><span class="lab">Input level</span><div class="meterwrap"><div class="lvl" id="m-lvl"></div><div class="gate" id="m-gate"></div></div><span class="tip" id="m-last">Tap the pad: the dot flashes for each hit heard. The gold line is the threshold a hit must pass.</span></div>' +
+        '<div class="field"><label for="m-sens">Sensitivity</label><input type="range" id="m-sens" min="20" max="60" step="1"><span class="tip" id="m-sens-val"></span></div>' +
+        '<div class="field"><label for="m-vol">Click volume</label><input type="range" id="m-vol" min="0.1" max="1" step="0.05"></div>' +
+        '<div class="field"><label for="m-lat">Delay compensation (ms)</label><div class="row"><input id="m-lat" type="number" inputmode="numeric" min="0" max="400" step="1" style="width:96px"><button class="btn ghost small" id="m-cal">Calibrate</button></div><p class="tip" id="m-cal-msg">Calibrate with the click playing through speakers. With headphones, leave this at 0 and adjust it if every take reads early or late by the same amount.</p></div>' +
+        '<p class="tip">Use headphones for the click so the microphone hears only you. Put the mic 0.5 to 1 m from the pad or kit and switch off any room echo cancelling in your system settings.</p>' +
+      '</div>' +
+      '<div class="card">' +
+        '<h3>Check a recording</h3>' +
+        '<p class="tip" style="margin-bottom:10px">Choose an audio or video file, for example your weekly phone recording. The app finds your hits and scores how steady they are against the tempo and pattern chosen above.</p>' +
+        '<label class="btn ghost" style="cursor:pointer">Choose a file<input type="file" id="r-file" accept="audio/*,video/*" style="display:none"></label>' +
+        '<p class="tip" id="r-msg" style="margin-top:10px" aria-live="polite"></p>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
+  ['p-ex', 'p-tip', 'p-pattern', 'p-bpm', 'p-minus', 'p-plus', 'p-reps', 'p-dur', 'p-click', 'p-click-tip', 's-group', 's-name', 's-bpm', 's-beats', 's-msg', 's-lane', 's-last', 's-count',
+   's-prog', 's-go', 's-hint', 'p-result', 'm-btn', 'm-flash', 'm-status', 'm-lvl', 'm-gate', 'm-last', 'm-sens', 'm-sens-val', 'm-vol', 'm-lat', 'm-cal', 'm-cal-msg', 'r-file', 'r-msg'
+  ].forEach(function (id) { el[id] = $(id); });
+}
+
+/* ---------- State and controls ---------- */
+function clickOptions(ex) { return ex.clickBeats ? ['24'] : (ex.mode === 'free' ? ['on', '24', 'off'] : ['on', '24']); }
+function normalize() {
+  var ex = EX[P.exId], ok = clickOptions(ex);
+  if (ok.indexOf(P.click) < 0) P.click = ok[0];
+  P.bpm = clamp(Math.round(P.bpm) || 60, 40, 200);
+  P.reps = clamp(Math.round(P.reps) || ex.reps, 1, 300);
+}
+function patternHtml(ex) {
+  if (ex.mode === 'free') return '';
+  var shown = ex.bars.slice(0, 5), more = ex.bars.length - shown.length;
+  return shown.map(function (b) {
+    var h = '';
+    for (var i = 0; i < b.length; i++) {
+      var c = b.charAt(i), cls = c === '.' ? '' : c;
+      h += '<i class="' + cls + (i % ex.spb === ex.spb - 1 && i < b.length - 1 ? ' gap' : '') + '">' + (c === '.' ? '' : c === 'f' ? '~' : c) + '</i>';
+    }
+    return '<div class="pattern" style="margin-bottom:4px">' + h + '</div>';
+  }).join('') + (more > 0 ? '<p class="tip">and ' + more + ' more bars</p>' : '') +
+    '<p class="tip" style="margin-top:6px">A accent &middot; x normal &middot; g soft &middot; ~ free fill</p>';
+}
+var CLICK_LABEL = { on: 'Every beat', '24': 'Beats 2 and 4', off: 'Off' };
+var CLICK_TIP = {
+  on: 'The click plays on every beat after a one-bar count-in.',
+  '24': 'The click only plays on beats 2 and 4, so you carry beats 1 and 3 yourself.',
+  off: 'No click. You hear three cue beeps, then start your play-along track one second after the third. Set the BPM to match the track. The app fits a grid to your playing and scores how steady it is.'
+};
+function rampText() {
+  var r = E.rampAdvice(rampTakes(), P.exId, P.bpm, 80);
+  if (r.ready) return r.run + ' clean passes in a row at ' + P.bpm + ' BPM. Time to try ' + r.next + ' BPM.';
+  return r.run + ' of 3 clean passes in a row at ' + P.bpm + ' BPM. Add 4 BPM after three.';
+}
+function rampTakes() {
+  return S.data.takes.filter(function (t) { return t.kind !== 'recording'; }).map(function (t) { return { exId: t.exId, bpm: t.bpm, score: t.pass ? t.score : 0 }; });
+}
+function dur() {
+  var plan = E.planTake(EX[P.exId], { bpm: P.bpm, reps: P.reps, tStart: 0, click: P.click });
+  return plan.tEnd - plan.t0;
+}
+function sync() {
+  normalize();
+  var ex = EX[P.exId];
+  el['p-ex'].value = P.exId;
+  el['p-tip'].textContent = ex.tip;
+  el['p-pattern'].innerHTML = patternHtml(ex);
+  el['p-bpm'].value = P.bpm;
+  el['p-reps'].value = P.reps;
+  el['p-dur'].textContent = fmtDur(dur()) + (EX[P.exId].mode === 'free' ? ' of playing' : '');
+  var opts = clickOptions(ex);
+  el['p-click'].innerHTML = opts.map(function (o) {
+    return '<button type="button" data-click="' + o + '" aria-pressed="' + (o === P.click ? 'true' : 'false') + '">' + CLICK_LABEL[o] + '</button>';
+  }).join('');
+  el['p-click-tip'].textContent = CLICK_TIP[P.click];
+  el['s-group'].textContent = ex.group + (P.day ? ' · Day ' + ((P.day.w - 1) * 7 + P.day.d + 1) : '');
+  el['s-name'].textContent = ex.name;
+  el['s-bpm'].innerHTML = P.bpm + '<small>BPM</small>';
+  el['s-hint'].textContent = ex.mode === 'free' ? '' : rampText();
+  el['m-sens'].value = String(-S.data.settings.gate);
+  el['m-sens-val'].textContent = 'Threshold ' + S.data.settings.gate + ' dB. Move right if quiet hits are missed, left if the room noise triggers hits.';
+  el['m-vol'].value = S.data.settings.vol;
+  el['m-lat'].value = S.data.settings.latency;
+  placeGate();
+  if (!live) drawIdle();
+}
+function placeGate() { el['m-gate'].style.left = clamp((S.data.settings.gate + 80) / 80 * 100, 0, 100) + '%'; }
+
+function setExercise(id) {
+  P.exId = id;
+  var ex = EX[id];
+  P.reps = ex.reps;
+  P.bpm = S.data.last[id] || 60;
+  P.click = ex.clickBeats ? '24' : 'on';
+  P.day = null;
+  hideResult();
+  sync();
+}
+
+function bindControls() {
+  el['p-ex'].addEventListener('change', function () { setExercise(el['p-ex'].value); });
+  el['p-bpm'].addEventListener('change', function () { P.bpm = parseFloat(el['p-bpm'].value); sync(); });
+  el['p-minus'].addEventListener('click', function () { P.bpm -= 4; sync(); });
+  el['p-plus'].addEventListener('click', function () { P.bpm += 4; sync(); });
+  el['p-reps'].addEventListener('change', function () { P.reps = parseFloat(el['p-reps'].value); sync(); });
+  el['p-click'].addEventListener('click', function (e) {
+    var b = e.target.closest('[data-click]');
+    if (!b || live) return;
+    P.click = b.getAttribute('data-click'); sync();
+  });
+  el['s-go'].addEventListener('click', function () { if (live) abortTake(); else startTake(); });
+  el['m-btn'].addEventListener('click', function () { if (mic.on) stopMic(); else enableMic(); });
+  el['m-sens'].addEventListener('input', function () {
+    var g = -parseFloat(el['m-sens'].value);
+    S.data.settings.gate = g; S.save();
+    if (mic.node) mic.node.port.postMessage({ gate: g });
+    if (mic.det) mic.det.setGate(g);
+    el['m-sens-val'].textContent = 'Threshold ' + g + ' dB. Move right if quiet hits are missed, left if the room noise triggers hits.';
+    placeGate();
+  });
+  el['m-vol'].addEventListener('input', function () {
+    S.data.settings.vol = parseFloat(el['m-vol'].value); S.save();
+    if (mic.out) mic.out.gain.value = S.data.settings.vol;
+  });
+  el['m-lat'].addEventListener('change', function () {
+    S.data.settings.latency = clamp(Math.round(parseFloat(el['m-lat'].value) || 0), 0, 400); S.save();
+    el['m-lat'].value = S.data.settings.latency;
+  });
+  el['m-cal'].addEventListener('click', calibrate);
+  el['r-file'].addEventListener('change', function () {
+    var f = el['r-file'].files && el['r-file'].files[0];
+    if (f) analyseFile(f);
+    el['r-file'].value = '';
+  });
+  el['p-result'].addEventListener('click', onResultClick);
+  window.addEventListener('resize', function () { if (visible && !live) drawIdle(); });
+}
+
+function setBusy(b) {
+  ['p-ex', 'p-bpm', 'p-minus', 'p-plus', 'p-reps', 'm-cal', 'r-file', 'm-btn'].forEach(function (id) { el[id].disabled = b; });
+  el['s-go'].textContent = b ? 'Stop take' : 'Start take';
+  el['s-go'].classList.toggle('brass', !b);
+  el['s-go'].classList.toggle('ghost', b);
+}
+function msg(t, cls) {
+  if (el['s-msg'].textContent === t && el['s-msg'].className === 'status' + (cls ? ' ' + cls : '')) return;
+  el['s-msg'].textContent = t;
+  el['s-msg'].className = 'status' + (cls ? ' ' + cls : '');
+}
+function micStatus(t, cls) { el['m-status'].textContent = t; el['m-status'].className = 'status' + (cls ? ' ' + cls : ''); }
+function setBeat(i) {
+  var b = el['s-beats'].children;
+  for (var k = 0; k < b.length; k++) b[k].className = k === i ? 'on' : '';
+}
+
+/* ---------- Microphone ---------- */
+function makeBuffers() {
+  var ctx = mic.ctx, sr = ctx.sampleRate;
+  function tone(freq, ms, amp) {
+    var n = Math.floor(sr * ms / 1000), buf = ctx.createBuffer(1, n, sr), d = buf.getChannelData(0);
+    for (var i = 0; i < n; i++) d[i] = Math.sin(2 * Math.PI * freq * i / sr) * Math.exp(-i / (n * 0.22)) * amp;
+    return buf;
+  }
+  mic.buf = { nrm: tone(1000, 35, 0.9), acc: tone(1600, 45, 1), cue: tone(660, 140, 0.8) };
+}
+function playBuf(buf, t) {
+  var s = mic.ctx.createBufferSource();
+  s.buffer = buf; s.connect(mic.out);
+  s.start(Math.max(t, mic.ctx.currentTime));
+  return s;
+}
+function attach(stream) {
+  var ctx = mic.ctx;
+  var src = ctx.createMediaStreamSource(stream);
+  var sink = ctx.createGain(); sink.gain.value = 0; sink.connect(ctx.destination);
+  mic.out = ctx.createGain(); mic.out.gain.value = S.data.settings.vol; mic.out.connect(ctx.destination);
+  var gate = S.data.settings.gate;
+  function fallback() {
+    var proc = ctx.createScriptProcessor(256, 1, 1);
+    var det = new E.OnsetDetector(ctx.sampleRate, { gate: gate });
+    proc.onaudioprocess = function (e) {
+      var d = e.inputBuffer.getChannelData(0), base = e.playbackTime - d.length / ctx.sampleRate;
+      for (var o = 0; o + 128 <= d.length; o += 128) {
+        var r = det.process(d.subarray(o, o + 128), base + o / ctx.sampleRate);
+        mic.level = r.db;
+        for (var k = 0; k < r.onsets.length; k++) onOnset(r.onsets[k].t, r.onsets[k].db);
+      }
+    };
+    src.connect(proc); proc.connect(sink);
+    mic.det = det; mic.proc = proc; mic.using = 'script';
+  }
+  if (ctx.audioWorklet && typeof AudioWorkletNode !== 'undefined') {
+    /* A page opened from a local file has an opaque origin, where Chrome refuses blob: worklet URLs but accepts data: URLs.
+       Try data: first, then blob:, then the older ScriptProcessor path. */
+    var code = E.workletSource();
+    return ctx.audioWorklet.addModule('data:application/javascript;base64,' + btoa(code)).catch(function () {
+      if (typeof Blob === 'undefined' || !window.URL || !URL.createObjectURL) throw new Error('no worklet');
+      return ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([code], { type: 'application/javascript' })));
+    }).then(function () {
+      var node = new AudioWorkletNode(ctx, 'drum-onset', {
+        numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1], channelCount: 1, channelCountMode: 'explicit', processorOptions: { gate: gate }
+      });
+      node.port.onmessage = function (e) {
+        var m = e.data;
+        if (m.type === 'onset') onOnset(m.t, m.db);
+        else if (m.type === 'level') mic.level = m.db;
+      };
+      src.connect(node); node.connect(sink);
+      mic.node = node; mic.using = 'worklet';
+    }).catch(function () { fallback(); });
+  }
+  fallback();
+  return Promise.resolve();
+}
+function ensureMic() {
+  if (mic.on) return mic.ctx.state === 'running' ? Promise.resolve() : mic.ctx.resume();
+  if (mic.starting) return mic.starting;
+  var md = navigator.mediaDevices, AC = window.AudioContext || window.webkitAudioContext;
+  if (!md || !md.getUserMedia || !AC) return Promise.reject({ name: 'Unsupported' });
+  var ctx;
+  try { ctx = new AC({ latencyHint: 'interactive' }); } catch (e) { ctx = new AC(); }
+  mic.starting = md.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 1 } })
+    .then(function (stream) {
+      mic.stream = stream; mic.ctx = ctx;
+      return ctx.resume().then(function () { return attach(stream); });
+    })
+    .then(function () {
+      makeBuffers();
+      mic.on = true; mic.starting = null;
+      micStatus(mic.using === 'worklet' ? 'Listening. Timing is measured on the audio clock.' : 'Listening in compatibility mode. Timing is less precise: run the delay calibration.', 'ok');
+      el['m-btn'].textContent = 'Turn microphone off';
+      if (!mic.loop) { mic.loop = true; meterLoop(); }
+    })
+    .catch(function (err) {
+      mic.starting = null;
+      try { ctx.close(); } catch (e) { /* ignore */ }
+      if (mic.stream) { mic.stream.getTracks().forEach(function (t) { t.stop(); }); mic.stream = null; }
+      mic.ctx = null;
+      throw err;
+    });
+  return mic.starting;
+}
+function micErrorText(err) {
+  var n = err && err.name;
+  if (n === 'NotAllowedError' || n === 'SecurityError') return 'The microphone is blocked. Allow it for this page (lock icon in the address bar), then press Enable microphone again.';
+  if (n === 'NotFoundError' || n === 'OverconstrainedError') return 'No microphone was found. Plug one in or pick another input in your system settings.';
+  if (n === 'NotReadableError') return 'The microphone is in use by another app. Close that app and try again.';
+  if (n === 'Unsupported') return 'This browser cannot use the microphone here. Open the file in Chrome, Edge, Firefox or Safari.';
+  return 'Could not start the microphone' + (err && err.message ? ': ' + err.message : '.');
+}
+function enableMic() {
+  micStatus('Starting. Allow microphone access when the browser asks.');
+  ensureMic().catch(function (err) { micStatus(micErrorText(err), 'err'); });
+}
+function stopMic() {
+  if (live) abortTake();
+  try { if (mic.node) mic.node.disconnect(); if (mic.proc) { mic.proc.onaudioprocess = null; mic.proc.disconnect(); } } catch (e) { /* ignore */ }
+  if (mic.stream) mic.stream.getTracks().forEach(function (t) { t.stop(); });
+  try { mic.ctx.close(); } catch (e2) { /* ignore */ }
+  mic.on = false; mic.ctx = null; mic.stream = null; mic.node = null; mic.proc = null; mic.det = null; mic.out = null; mic.level = -90; mic.disp = -90; mic.using = '';
+  el['m-btn'].textContent = 'Enable microphone';
+  el['m-lvl'].style.width = '0%';
+  micStatus('Microphone off.');
+}
+function meterLoop() {
+  if (!mic.on) { mic.loop = false; return; }
+  if (visible) {
+    mic.disp = Math.max(mic.level, mic.disp - 1.5);
+    el['m-lvl'].style.width = clamp((mic.disp + 80) / 80, 0, 1) * 100 + '%';
+  }
+  requestAnimationFrame(meterLoop);
+}
+function flashDot(db) {
+  el['m-flash'].classList.add('on');
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(function () { el['m-flash'].classList.remove('on'); }, 90);
+  el['m-last'].textContent = 'Last hit heard at ' + Math.round(db) + ' dB.';
+}
+
+/* ---------- Onsets during a take ---------- */
+function onOnset(t, db) {
+  flashDot(db);
+  if (calib) { calib.onsets.push({ t: t, db: db }); return; }
+  if (!live) return;
+  live.onsets.push({ t: t, db: db });
+  var v = live.view, tt = t - live.lat, st = 'hit', txt = 'Heard';
+  if (tt < v.t0 - v.sd * 0.5) { st = 'pre'; txt = 'Count-in'; }
+  else if (v.chars) {
+    var idx = Math.round((tt - v.t0) / v.sd);
+    if (idx >= v.total) { st = 'pre'; txt = 'Done'; }
+    else {
+      var err = tt - (v.t0 + idx * v.sd), c = v.chars.charAt(idx), win = Math.min(0.5 * v.sd, 0.12);
+      if (c === 'f') { st = 'fill'; txt = 'Fill'; }
+      else if (c === '.' || Math.abs(err) > win) { st = 'extra'; txt = 'Extra hit'; }
+      else { var ms = err * 1000; st = Math.abs(ms) <= 30 ? 'ok' : (ms < 0 ? 'early' : 'late'); txt = st === 'ok' ? 'On time' : (ms < 0 ? 'Early ' : 'Late ') + Math.round(Math.abs(ms)) + ' ms'; }
+    }
+  } else if (live.click !== 'off') {
+    var i2 = Math.round((tt - v.t0) / v.sd), e2 = (tt - (v.t0 + i2 * v.sd)) * 1000;
+    st = Math.abs(e2) <= 30 ? 'ok' : (e2 < 0 ? 'early' : 'late');
+    txt = st === 'ok' ? 'On time' : (e2 < 0 ? 'Early ' : 'Late ') + Math.round(Math.abs(e2)) + ' ms';
+  }
+  v.marks.push({ t: tt, db: db, st: st });
+  el['s-last'].textContent = txt;
+  el['s-last'].className = 'last ' + (st === 'ok' || st === 'early' || st === 'late' ? st : (st === 'extra' ? 'extra' : ''));
+  live.heard++;
+  el['s-count'].textContent = live.heard + ' hits heard';
+}
+
+/* ---------- Lane drawing ---------- */
+function readColors() {
+  var cs = getComputedStyle(document.documentElement);
+  function v(n) { return cs.getPropertyValue(n).trim() || '#888'; }
+  colors = { ink: v('--ink'), muted: v('--muted'), line: v('--line'), s2: v('--surface2'), brass: v('--brass-fill'), ok: v('--ok'), early: v('--early'), late: v('--late'), bad: v('--bad') };
+  return colors;
+}
+function makeView(ex, bpm, reps, t0) {
+  var sd = 60 / bpm / ex.spb, chars = null, total = 0;
+  if (ex.bars) {
+    var one = ex.bars.join('');
+    chars = '';
+    for (var r = 0; r < reps; r++) chars += one;
+    total = chars.length;
+  }
+  return { t0: t0, sd: sd, beat: 60 / bpm, spb: ex.spb, chars: chars, total: total, nBars: ex.mode === 'free' ? reps : (ex.bars ? ex.bars.length : 1) * reps, grid: ex.mode === 'free', marks: [] };
+}
+function drawIdle() {
+  var ex = EX[P.exId];
+  var v = makeView(ex, P.bpm, Math.min(P.reps, 3), 0);
+  draw(v, -v.beat * 0.7, readColors());
+}
+function draw(view, now, C) {
+  var cv = el['s-lane'];
+  if (!cv || !cv.getContext) return;
+  var cw = cv.clientWidth, ch = cv.clientHeight;
+  if (!cw || !ch) return;
+  var g = cv.getContext('2d');
+  if (!g) return;
+  var dpr = window.devicePixelRatio || 1;
+  if (cv.width !== Math.round(cw * dpr) || cv.height !== Math.round(ch * dpr)) { cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr); }
+  g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  g.clearRect(0, 0, cw, ch);
+  C = C || colors || readColors();
+  var span = Math.max(3, view.beat * 6.5), nowX = cw * 0.2, pps = cw / span, cy = ch * 0.55;
+  function X(t) { return nowX + (t - now) * pps; }
+  var tLeft = now - nowX / pps, tRight = now + (cw - nowX) / pps;
+
+  /* beat and bar lines */
+  var b0 = Math.floor((tLeft - view.t0) / view.beat), b1 = Math.ceil((tRight - view.t0) / view.beat);
+  g.font = '11px ui-monospace, Menlo, Consolas, monospace';
+  g.textBaseline = 'top';
+  for (var b = b0; b <= b1; b++) {
+    var x = X(view.t0 + b * view.beat), isBar = ((b % 4) + 4) % 4 === 0;
+    g.strokeStyle = isBar ? C.muted : C.line;
+    g.lineWidth = isBar ? 2 : 1;
+    g.beginPath(); g.moveTo(x, isBar ? 6 : 24); g.lineTo(x, ch - 6); g.stroke();
+    if (isBar && b >= 0 && b / 4 < view.nBars) { g.fillStyle = C.muted; g.fillText(String(b / 4 + 1), x + 5, 7); }
+  }
+  g.strokeStyle = C.line; g.lineWidth = 1;
+  g.beginPath(); g.moveTo(0, cy); g.lineTo(cw, cy); g.stroke();
+
+  /* expected notes */
+  var i0 = Math.max(0, Math.floor((tLeft - view.t0) / view.sd)), i1 = Math.ceil((tRight - view.t0) / view.sd), i;
+  if (view.chars) {
+    i1 = Math.min(view.total - 1, i1);
+    for (i = i0; i <= i1; i++) {
+      var c = view.chars.charAt(i);
+      if (c === '.') continue;
+      var xx = X(view.t0 + i * view.sd);
+      if (c === 'f') {
+        g.globalAlpha = 0.55; g.fillStyle = C.line;
+        g.fillRect(xx - view.sd * pps / 2, cy - 26, view.sd * pps, 52);
+        g.globalAlpha = 1;
+        continue;
+      }
+      g.beginPath();
+      if (c === 'g') { g.strokeStyle = C.muted; g.lineWidth = 1.5; g.arc(xx, cy, 4, 0, 6.2832); g.stroke(); }
+      else { g.fillStyle = c === 'A' ? C.ink : C.muted; g.arc(xx, cy, c === 'A' ? 9 : 5.5, 0, 6.2832); g.fill(); }
+    }
+  } else if (view.grid) {
+    for (i = i0; i <= i1; i++) {
+      var gx = X(view.t0 + i * view.sd);
+      g.strokeStyle = C.line; g.lineWidth = 1;
+      g.beginPath(); g.moveTo(gx, cy - 6); g.lineTo(gx, cy + 6); g.stroke();
+    }
+  }
+
+  /* your hits */
+  var col = { ok: C.ok, early: C.early, late: C.late, extra: C.bad, fill: C.muted, pre: C.muted, hit: C.ink };
+  g.lineCap = 'round'; g.lineWidth = 4;
+  for (var m = 0; m < view.marks.length; m++) {
+    var mk = view.marks[m], mx = X(mk.t);
+    if (mx < -10 || mx > cw + 10) continue;
+    var h = clamp((mk.db + 60) / 45, 0.2, 1) * ch * 0.32;
+    g.strokeStyle = col[mk.st] || C.ink;
+    g.beginPath(); g.moveTo(mx, cy - h); g.lineTo(mx, cy + h); g.stroke();
+  }
+
+  /* now line */
+  g.strokeStyle = C.brass; g.lineWidth = 3;
+  g.beginPath(); g.moveTo(nowX, 0); g.lineTo(nowX, ch); g.stroke();
+}
+
+/* ---------- Take lifecycle ---------- */
+function startTake() {
+  if (live || calib) return;
+  msg('Starting the microphone. Allow access if asked.');
+  ensureMic().then(begin).catch(function (err) { msg(micErrorText(err), 'err'); micStatus(micErrorText(err), 'err'); });
+}
+function begin() {
+  if (live) return;
+  normalize();
+  var ctx = mic.ctx, ex = EX[P.exId], off = P.click === 'off';
+  var tStart = ctx.currentTime + (off ? 2.7 : 0.5);
+  var plan = E.planTake(ex, { bpm: P.bpm, reps: P.reps, tStart: tStart, click: P.click });
+  var srcs = [];
+  plan.clicks.forEach(function (c) { srcs.push(playBuf(c.accent ? mic.buf.acc : mic.buf.nrm, c.t)); });
+  if (off) [3, 2, 1].forEach(function (k) { srcs.push(playBuf(mic.buf.cue, plan.t0 - k)); });
+  var view = makeView(ex, P.bpm, P.reps, plan.t0);
+  live = { ex: ex, exId: P.exId, bpm: P.bpm, reps: P.reps, click: P.click, plan: plan, srcs: srcs, view: view, onsets: [], heard: 0,
+           lat: S.data.settings.latency / 1000, day: P.day, lastBeat: -2, lastMsg: '', raf: 0, timer: 0 };
+  hideResult();
+  readColors();
+  setBusy(true);
+  el['s-last'].textContent = ' '; el['s-last'].className = 'last';
+  el['s-count'].textContent = '';
+  el['s-prog'].style.width = '0%';
+  frame();
+  live.timer = setTimeout(tryFinish, Math.max(50, (plan.tEnd + 0.4 - ctx.currentTime) * 1000));
+}
+function frame() {
+  if (!live) return;
+  var L = live, now = mic.ctx.currentTime, p = L.plan;
+  draw(L.view, now, colors);
+  var bi;
+  if (now < p.t0) bi = L.click === 'off' ? -1 : clamp(Math.floor((now - (p.t0 - 4 * p.beat)) / p.beat), 0, 3);
+  else bi = Math.floor((now - p.t0) / p.beat) % 4;
+  if (bi !== L.lastBeat) { setBeat(bi); L.lastBeat = bi; }
+  if (now < p.t0) {
+    var left = L.click === 'off' ? Math.ceil(p.t0 - now) : Math.ceil((p.t0 - now) / p.beat - 1e-6);
+    msg(L.click === 'off' ? 'Get ready. Start your track after the third beep (' + Math.max(1, left) + ')' : 'Count-in: ' + clamp(left, 1, 4));
+  } else {
+    var bar = Math.min(p.nBars, Math.floor((now - p.t0) / p.barDur) + 1);
+    msg(now < p.tEnd ? 'Play. Bar ' + bar + ' of ' + p.nBars : 'Scoring…');
+  }
+  el['s-prog'].style.width = clamp((now - p.t0) / (p.tEnd - p.t0), 0, 1) * 100 + '%';
+  if (now >= p.tEnd + 0.4) tryFinish(); else L.raf = requestAnimationFrame(frame);
+}
+function tryFinish() {
+  if (!live) return;
+  clearTimeout(live.timer);
+  if (mic.ctx.currentTime < live.plan.tEnd + 0.38) { live.timer = setTimeout(tryFinish, 120); return; }
+  finish();
+}
+function stopClicks(L) { L.srcs.forEach(function (s) { try { s.stop(); } catch (e) { /* already ended */ } }); }
+function abortTake() {
+  var L = live;
+  if (!L) return;
+  live = null;
+  clearTimeout(L.timer); cancelAnimationFrame(L.raf);
+  stopClicks(L);
+  setBusy(false); setBeat(-1);
+  el['s-prog'].style.width = '0%';
+  msg('Stopped. Nothing was scored.');
+  drawIdle();
+}
+function finish() {
+  var L = live;
+  live = null;
+  clearTimeout(L.timer); cancelAnimationFrame(L.raf);
+  setBusy(false); setBeat(-1);
+  el['s-last'].textContent = '\u00a0'; el['s-last'].className = 'last';
+  var ex = L.ex, plan = L.plan, res;
+  var on = L.onsets.filter(function (o) { return o.t <= plan.tEnd + 0.4; });
+  if (ex.mode === 'free') {
+    res = E.scoreFree({ bpm: L.bpm, spb: ex.spb, t0: plan.t0, dur: plan.tEnd - plan.t0, onsets: on, latency: L.lat, phaseFit: L.click === 'off', reps: L.reps });
+  } else {
+    res = E.scoreTake(ex, { bpm: L.bpm, reps: L.reps, t0: plan.t0, onsets: on, latency: L.lat });
+  }
+  if (L.click !== 'off') {
+    var cb = E.calibrateLatency(plan.clicks.slice(0, 4).map(function (c) { return c.t; }), L.onsets.filter(function (o) { return o.t < plan.t0 - 0.05; }));
+    if (cb.n >= 3 && cb.sd <= 10 && cb.ms < 250) {
+      res.notes.unshift({ kind: 'warn', text: 'During the 4-beat count-in the microphone heard a hit about ' + cb.ms + ' ms after every click. If you were not playing then, it is hearing the click through your speakers, which inflates this score. Use headphones or turn the click volume down.' });
+    }
+  }
+  save(res, L);
+  msg(res.pass ? 'Take finished. Clean pass.' : 'Take finished.', res.pass ? 'ok' : '');
+  el['s-prog'].style.width = '100%';
+  renderResult(res, L);
+  drawIdle();
+}
+function save(res, L) {
+  S.data.last[L.exId] = L.bpm;
+  S.addTake({
+    ts: Date.now(), day: L.day ? (L.day.w - 1) * 7 + L.day.d + 1 : null, exId: L.exId, bpm: L.bpm, reps: L.reps, click: L.click, kind: res.kind, score: res.score, pass: res.pass,
+    hitRate: Math.round(res.hitRate * 100) / 100, meanErr: res.meanErr, sdErr: res.sdErr, within30: Math.round(res.within30 * 100) / 100, drift: res.drift
+  });
+  el['s-hint'].textContent = L.ex.mode === 'free' ? '' : rampText();
+}
+
+/* ---------- Latency calibration ---------- */
+function calibrate() {
+  if (live || calib) return;
+  el['m-cal-msg'].textContent = 'Starting the microphone…';
+  ensureMic().then(function () {
+    var ctx = mic.ctx, t = ctx.currentTime + 0.6, times = [];
+    mic.out.gain.value = 1;
+    for (var i = 0; i < 8; i++) { times.push(t + i * 0.6); playBuf(mic.buf.acc, t + i * 0.6); }
+    calib = { times: times, onsets: [] };
+    el['m-cal-msg'].textContent = 'Listening to the click through your speakers. Stay quiet for 6 seconds.';
+    setTimeout(function () {
+      var c = calib; calib = null;
+      if (mic.out) mic.out.gain.value = S.data.settings.vol;
+      var r = E.calibrateLatency(c.times, c.onsets);
+      if (r.n >= 5 && r.sd <= 20) {
+        S.data.settings.latency = clamp(r.ms, 0, 400); S.save();
+        el['m-lat'].value = S.data.settings.latency;
+        el['m-cal-msg'].textContent = 'Measured ' + r.ms + ' ms (spread ' + r.sd + ' ms) and applied it.';
+      } else {
+        el['m-cal-msg'].textContent = 'Heard ' + r.n + ' of 8 clicks' + (r.n >= 5 ? ' with an uneven delay' : '') + '. Use speakers rather than headphones, raise the system volume, keep the room quiet, then try again. You can also type a delay yourself.';
+      }
+    }, 6200);
+  }).catch(function (err) { el['m-cal-msg'].textContent = micErrorText(err); });
+}
+
+/* ---------- Recording analysis ---------- */
+function decode(ctx, buf) {
+  return new Promise(function (resolve, reject) {
+    var r = ctx.decodeAudioData(buf, resolve, reject);
+    if (r && r.then) r.then(resolve, reject);
+  });
+}
+function analyseFile(file) {
+  var rm = el['r-msg'];
+  rm.textContent = 'Reading ' + file.name + '…';
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) { rm.textContent = 'This browser cannot decode audio.'; return; }
+  var reader = new FileReader();
+  reader.onerror = function () { rm.textContent = 'Could not read that file.'; };
+  reader.onload = function () {
+    var ctx = mic.ctx || new AC();
+    decode(ctx, reader.result).then(function (ab) {
+      var sr = ab.sampleRate, n = ab.length, nc = ab.numberOfChannels, data = ab.getChannelData(0), i, c;
+      if (nc > 1) {
+        data = new Float32Array(n);
+        for (c = 0; c < nc; c++) { var cd = ab.getChannelData(c); for (i = 0; i < n; i++) data[i] += cd[i] / nc; }
+      }
+      var probe = new E.OnsetDetector(sr, { gate: 200 }), dbs = [];
+      for (i = 0; i + 128 <= n; i += 128) dbs.push(probe.process(data.subarray(i, i + 128), i / sr).db);
+      dbs.sort(function (a, b) { return a - b; });
+      var top = dbs.length ? dbs[Math.floor((dbs.length - 1) * 0.995)] : -60;
+      var gate = clamp(top - 30, -55, -25);
+      var det = new E.OnsetDetector(sr, { gate: gate }), ons = [];
+      for (i = 0; i + 128 <= n; i += 128) {
+        var r = det.process(data.subarray(i, i + 128), i / sr);
+        for (var k = 0; k < r.onsets.length; k++) ons.push(r.onsets[k]);
+      }
+      if (ons.length < 8) { rm.textContent = 'Only ' + ons.length + ' hits were found in ' + file.name + '. Is the drum sound loud enough in the recording?'; return; }
+      normalize();
+      var ex = EX[P.exId], d = ons[ons.length - 1].t - ons[0].t, reps = Math.max(1, Math.round(d / (240 / P.bpm)));
+      var res = E.scoreFree({ bpm: P.bpm, spb: ex.spb, t0: ons[0].t, dur: d, onsets: ons, latency: 0, phaseFit: true, reps: reps });
+      var L = { ex: ex, exId: P.exId, bpm: P.bpm, reps: reps, click: 'off', day: null, recording: file.name };
+      save(res, L);
+      rm.textContent = 'Found ' + ons.length + ' hits in ' + fmtDur(d) + ' of playing (threshold ' + Math.round(gate) + ' dB).';
+      renderResult(res, L);
+    }).catch(function () { rm.textContent = 'This browser could not decode that file. Try an .m4a, .mp3 or .wav, or a different video format.'; });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ---------- Results ---------- */
+function hideResult() { el['p-result'].hidden = true; el['p-result'].innerHTML = ''; }
+
+function timingChart(res) {
+  var W = 640, H = 210, pl = 38, pr = 8, pt = 20, pb = 22, range = 75;
+  var maxI = res.kind === 'take' ? res.cells.length : 1;
+  res.points.forEach(function (p) { if (p.i + 1 > maxI) maxI = p.i + 1; });
+  function X(i) { return pl + (maxI > 1 ? i / (maxI - 1) : 0.5) * (W - pl - pr); }
+  function Y(ms) { return pt + (1 - (clamp(ms, -range, range) + range) / (2 * range)) * (H - pt - pb); }
+  var g = '<svg class="chart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Timing of every hit. Points inside the green band are within 30 milliseconds of the grid.">';
+  g += '<rect class="band" x="' + pl + '" y="' + Y(30) + '" width="' + (W - pl - pr) + '" height="' + (Y(-30) - Y(30)) + '"/>';
+  [-60, -30, 0, 30, 60].forEach(function (v) {
+    g += '<line class="' + (v === 0 ? 'zero' : 'grid') + '" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/><text x="' + (pl - 5) + '" y="' + (Y(v) + 3) + '" text-anchor="end">' + (v > 0 ? '+' : '') + v + '</text>';
+  });
+  res.points.forEach(function (p) {
+    var cls = Math.abs(p.err) <= 30 ? 'pt-ok' : (p.err < 0 ? 'pt-early' : 'pt-late');
+    g += '<circle class="' + cls + '" cx="' + X(p.i).toFixed(1) + '" cy="' + Y(p.err).toFixed(1) + '" r="2.8"><title>' + Math.round(p.err) + ' ms</title></circle>';
+  });
+  (res.extraPoints || []).forEach(function (p) {
+    g += '<circle class="pt-extra" cx="' + X(p.i).toFixed(1) + '" cy="' + Y(p.err).toFixed(1) + '" r="3.4"><title>extra hit</title></circle>';
+  });
+  g += '<text x="' + pl + '" y="' + (H - 6) + '">start</text><text x="' + (W - pr) + '" y="' + (H - 6) + '" text-anchor="end">end</text>' +
+       '<text x="' + (pl + 4) + '" y="12">late \u2191</text><text x="' + (W / 2) + '" y="' + (H - 6) + '" text-anchor="middle">\u2193 early</text></svg>';
+  return g;
+}
+function stepMap(res) {
+  var per = res.stepsPerBar, spb = res.spb, h = '', bars = Math.ceil(res.cells.length / per);
+  for (var b = 0; b < bars; b++) {
+    h += '<div class="bar"><span class="bn">' + (b + 1) + '</span>';
+    for (var k = 0; k < per; k++) {
+      var cell = res.cells[b * per + k];
+      if (!cell) break;
+      var tip = E.stepLabel(k, spb) + (cell.err !== null ? ', ' + (cell.err > 0 ? '+' : '') + Math.round(cell.err) + ' ms' : (cell.st === 'miss' ? ', missed' : (cell.st === 'free' ? ', free' : '')));
+      h += '<i class="' + cell.st + (k % spb === spb - 1 && k < per - 1 ? ' beat' : '') + '" title="' + esc(tip) + '"></i>';
+    }
+    h += '</div>';
+  }
+  return h;
+}
+function signed(v) { return (v > 0 ? '+' : '') + v; }
+
+function renderResult(res, L) {
+  var take = res.kind === 'take';
+  var verdict = res.pass ? (take ? 'Clean pass' : 'Steady') :
+    (res.matched === 0 ? 'No hits heard' : (take && res.hitRate < 0.9 ? 'Too many missed notes' : 'Not there yet'));
+  var sub = L.ex.name + ' at ' + L.bpm + ' BPM' + (L.recording ? ' (recording: ' + L.recording + ')' : ', ' + L.reps + (L.reps === 1 ? ' repeat' : ' repeats')) +
+    (take ? '' : '. Timing only: which drum you hit is not checked.');
+  var h = '<div class="result-head"><div class="scorebox ' + (res.pass ? 'pass' : 'fail') + '"><div><b>' + res.score + '</b><span>of 100</span></div></div>' +
+    '<div><div class="eyebrow">Result</div><div class="verdict">' + esc(verdict) + '</div><p class="muted">' + esc(sub) + '</p></div></div>';
+
+  var m = [];
+  if (take) m.push(['Notes hit', res.matched + ' / ' + res.expected]);
+  else m.push(['Hits heard', String(res.matched)]);
+  m.push(['Timing spread', res.sdErr + ' ms']);
+  m.push(['Average offset', signed(res.meanErr) + ' ms']);
+  m.push(['Within 30 ms', Math.round(res.within30 * 100) + '%']);
+  if (take) m.push(['Extra hits', String(res.extras)]);
+  m.push(['Drift per bar', signed(res.drift) + ' ms']);
+  if (res.kind === 'recording' && res.phase !== null) m.push(['Grid lock', Math.round(res.phase * 100) + '%']);
+  if (!take && res.dynRange !== null) m.push(['Loud to soft', res.dynRange + ' dB']);
+  h += '<div class="metrics">' + m.map(function (x) { return '<div class="metric"><b>' + esc(x[1]) + '</b><span>' + esc(x[0]) + '</span></div>'; }).join('') + '</div>';
+
+  h += '<ul class="notes">' + res.notes.map(function (n) { return '<li class="' + (n.kind === 'good' ? 'good' : (n.kind === 'warn' ? 'warn' : '')) + '">' + esc(n.text) + '</li>'; }).join('') + '</ul>';
+
+  var acts = '';
+  if (take && !L.recording) {
+    var ramp = E.rampAdvice(rampTakes(), L.exId, L.bpm, 80);
+    h += '<div class="ramp" style="margin-bottom:14px">' + (ramp.ready
+      ? '<b>' + ramp.run + ' clean passes in a row at ' + L.bpm + ' BPM.</b> The plan says to add 4 BPM now.'
+      : '<b>' + ramp.run + ' of 3</b> clean passes in a row at ' + L.bpm + ' BPM. Add 4 BPM after three.') + '</div>';
+    if (ramp.ready) acts += '<button class="btn brass" data-r="faster" data-bpm="' + ramp.next + '">Try ' + ramp.next + ' BPM</button>';
+  }
+  h += '<h4 style="font-size:18px;margin:4px 0 6px">Timing of every hit</h4>' + timingChart(res);
+  if (take) {
+    h += '<h4 style="font-size:18px;margin:16px 0 6px">Note map</h4><p class="tip" style="margin-bottom:6px">One row per bar, a gap after each beat. Hover a cell for its step and timing.</p>' +
+      '<div class="stepmap" role="img" aria-label="Map of every expected note, coloured by timing">' + stepMap(res) + '</div>' +
+      '<div class="legend"><span style="--c:var(--ok)">Within 30 ms</span><span style="--c:var(--early)">Early</span><span style="--c:var(--late)">Late</span><span style="--c:var(--bad)">Missed</span></div>';
+  }
+  var cur = S.data.settings.latency;
+  if (take && L.click !== 'off' && Math.abs(res.meanErr) >= 25) {
+    var nl = clamp(Math.round(cur + res.meanErr), 0, 400);
+    acts += '<button class="btn ghost" data-r="lat" data-ms="' + nl + '">Set delay to ' + nl + ' ms</button>';
+    h += '<p class="tip" style="margin-top:12px">If you were playing in time with the click you heard and every take shows this same offset, the delay setting is off, not your timing. The button above applies the correction.</p>';
+  }
+  if (L.day && res.pass && !L.recording && !S.isDone('w' + L.day.w + 'd' + L.day.d)) {
+    acts += '<button class="btn" data-r="done" data-id="w' + L.day.w + 'd' + L.day.d + '">Mark that day done</button>';
+  }
+  h += '<div class="row" style="margin-top:16px"><button class="btn ghost" data-r="again">Play it again</button>' + acts + '</div>';
+  var box = el['p-result'];
+  box.innerHTML = h;
+  box.hidden = false;
+  if (typeof box.scrollIntoView === 'function') { try { box.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { /* ignore */ } }
+}
+function onResultClick(e) {
+  var b = e.target.closest('[data-r]');
+  if (!b) return;
+  var a = b.getAttribute('data-r');
+  if (a === 'again') startTake();
+  else if (a === 'faster') { P.bpm = parseInt(b.getAttribute('data-bpm'), 10); hideResult(); sync(); }
+  else if (a === 'lat') { S.data.settings.latency = parseInt(b.getAttribute('data-ms'), 10); S.save(); el['m-lat'].value = S.data.settings.latency; b.disabled = true; b.textContent = 'Delay set to ' + S.data.settings.latency + ' ms'; }
+  else if (a === 'done') { App.markDone(b.getAttribute('data-id')); b.disabled = true; b.textContent = 'Marked done'; }
+}
+
+/* ---------- Public API ---------- */
+return {
+  mount: function (section) {
+    root = section;
+    build();
+    bindControls();
+    sync();
+  },
+  show: function () { visible = true; if (root) { sync(); if (mic.on && !mic.loop) { mic.loop = true; meterLoop(); } } },
+  hide: function () { visible = false; },
+  open: function (p) {
+    if (live || !root) return;
+    P.exId = p.exId; P.bpm = p.bpm; P.reps = p.reps || EX[p.exId].reps; P.click = p.click || 'on'; P.day = p.day || null;
+    hideResult();
+    sync();
+    msg('Ready.');
+  },
+  _debug: function () { return { P: P, live: !!live, mic: { on: mic.on, using: mic.using } }; }
+};
+})();
+
+App.start();
+
+</script>
+</body>
+</html>
